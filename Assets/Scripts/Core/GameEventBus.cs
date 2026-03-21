@@ -1,0 +1,46 @@
+using PlayableAd.Interface;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace PlayableAd.Core
+{
+    ///<summary>
+    ///이벤트 버스(옵저버 패턴)
+    ///구독은 OnEnable, 해제는 OnDisable
+    /// </summary>
+    public static class GameEventBus
+    {
+        // --- 리소스 ---
+        public static event Action<int> OnOreHarvested;
+        public static event Action<int> OnHandcuffCrafted;
+
+        // --- 판매 / 재화 ---
+        public static event Action<int> OnItemSold;           // 판매 수량
+        public static event Action<int> OnCurrencyChanged;    // 변동 후 잔액
+
+        // --- 업그레이드 / 구매 ---
+        public static event Action<UpgradeType> OnUpgradePurchased;
+        public static event Action<NPCRole, int> OnNPCSpawned; // 역할, 수량
+
+        // --- 스테이지 ---
+        public static event Action<GameStage> OnStageChanged;
+        public static event Action OnPrisonFull;
+        public static event Action OnPrisonExpanded;
+        public static event Action OnGameEnd;
+
+        // --- Publish 메서드 ---
+        public static void Publish_OreHarvested(int amount) => OnOreHarvested?.Invoke(amount);
+        public static void Publish_HandcuffCrafted(int amount) => OnHandcuffCrafted?.Invoke(amount);
+        public static void Publish_ItemSold(int amount) => OnItemSold?.Invoke(amount);
+        public static void Publish_CurrencyChanged(int balance) => OnCurrencyChanged?.Invoke(balance);
+        public static void Publish_UpgradePurchased(UpgradeType t) => OnUpgradePurchased?.Invoke(t);
+        public static void Publish_NPCSpawned(NPCRole r, int count) => OnNPCSpawned?.Invoke(r, count);
+        public static void Publish_StageChanged(GameStage stage) => OnStageChanged?.Invoke(stage);
+        public static void Publish_PrisonFull() => OnPrisonFull?.Invoke();
+        public static void Publish_PrisonExpanded() => OnPrisonExpanded?.Invoke();
+        public static void Publish_GameEnd() => OnGameEnd?.Invoke();
+    }
+
+}
