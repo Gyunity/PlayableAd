@@ -15,7 +15,6 @@ namespace PlayableAd.Core
             ServiceLocator.Register<CurrencyManager>(this);
         }
 
-        //!!!!!»Æ¿Œ
         public void Add(int amount)
         {
             if (amount <= 0) return;

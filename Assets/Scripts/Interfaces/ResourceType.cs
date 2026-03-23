@@ -4,7 +4,7 @@ namespace PlayableAd.Interface
     {
         Ore, //±¤¹°
         Handcuff, //¼ö°©
-        Money, // µ·
+        Coin, // µ·
         Weapon // ¹«±â
     }
 

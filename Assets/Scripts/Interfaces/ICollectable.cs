@@ -11,6 +11,7 @@ namespace PlayableAd.Interface
         bool Collect(GameObject collector);
         void OnCollected();
         void ResetCollectable();
+        void SetCollectable(bool value);
     }
 
 }

@@ -13,15 +13,15 @@ namespace PlayableAd.Core
         {
             { ResourceType.Ore, 0 },
             { ResourceType.Handcuff, 0 },
-            { ResourceType.Money, 0 },
+            { ResourceType.Coin, 0 },
         };
 
         //리소스 최대량
         private readonly Dictionary<ResourceType, int> _maxAmounts = new()
         {
-            { ResourceType.Ore, 0 },
+            { ResourceType.Ore, 10 },
             {ResourceType.Handcuff, 20 },
-            { ResourceType.Money, 9999 },
+            { ResourceType.Coin, 9999 },
         };
 
         protected override void OnAwake()

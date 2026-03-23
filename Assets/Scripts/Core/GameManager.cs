@@ -45,7 +45,7 @@ namespace PlayableAd.Core
                 UpgradeType.Weapon1 => GameStage.Stage5_BuyMiner,
                 UpgradeType.Miner => GameStage.Stage6_BuyWorker,
                 UpgradeType.Worker => GameStage.Stage7_WeaponUpgrade2,
-                UpgradeType.Weapon2 => GameStage.Stage8_PrisonExpand,
+                //UpgradeType.Weapon2 => GameStage.Stage8_PrisonExpand,
                 UpgradeType.PrisonExpand => GameStage.Stage9_End,
                 _ => CurrentStage
             };

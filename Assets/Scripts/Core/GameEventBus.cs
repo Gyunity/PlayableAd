@@ -19,16 +19,23 @@ namespace PlayableAd.Core
         // --- 판매 / 재화 ---
         public static event Action<int> OnItemSold;           // 판매 수량
         public static event Action<int> OnCurrencyChanged;    // 변동 후 잔액
-
+        public static event Action<int> OnCustomerServed;
         // --- 업그레이드 / 구매 ---
         public static event Action<UpgradeType> OnUpgradePurchased;
         public static event Action<NPCRole, int> OnNPCSpawned; // 역할, 수량
 
         // --- 스테이지 ---
         public static event Action<GameStage> OnStageChanged;
+        public static event Action OnGameEnd;
+
+        // 수용소
+        public static event Action<int> OnPrisonerAdded;   // 수감자 추가 (현재 인원)
         public static event Action OnPrisonFull;
         public static event Action OnPrisonExpanded;
-        public static event Action OnGameEnd;
+
+        // 카메라
+        public static event Action CameraIn;
+        public static event Action CameraOut;
 
         // --- Publish 메서드 ---
         public static void Publish_OreHarvested(int amount) => OnOreHarvested?.Invoke(amount);
@@ -41,6 +48,10 @@ namespace PlayableAd.Core
         public static void Publish_PrisonFull() => OnPrisonFull?.Invoke();
         public static void Publish_PrisonExpanded() => OnPrisonExpanded?.Invoke();
         public static void Publish_GameEnd() => OnGameEnd?.Invoke();
+        public static void Publish_CustomerServed(int totalCount) => OnCustomerServed?.Invoke(totalCount);
+        public static void Publish_PrisonerAdded(int count) => OnPrisonerAdded?.Invoke(count);
+        public static void Publish_CameraIn() => CameraIn?.Invoke();
+        public static void Publish_CameraOut() => CameraOut?.Invoke();
     }
 
 }

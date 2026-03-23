@@ -6,10 +6,8 @@ namespace PlayableAd.Interface
     {
         ResourceType SellResourceType { get; }
         int SellAmountPerCustomer { get; }
-        int RevenusPerCustomer {  get; }
 
         bool CanSell(IResourceContainer container);
-        int Sell(IResourceContainer container);
     }
 
 }
