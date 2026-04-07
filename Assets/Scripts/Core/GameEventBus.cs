@@ -33,10 +33,14 @@ namespace PlayableAd.Core
         public static event Action OnPrisonFull;
         public static event Action OnPrisonExpanded;
 
-        // 카메라
-        public static event Action CameraIn;
-        public static event Action CameraOut;
+        // 컷씬 시작/종료
+        public static event Action OnCutsceneStart;
+        public static event Action OnCutsceneEnd;
 
+        public static event Action<int> OnOreDeposited;
+        public static event Action OnHandcuffReceived;
+        public static void Publish_HandcuffReceived() => OnHandcuffReceived?.Invoke();
+        public static void Publish_OreDeposited(int count) => OnOreDeposited?.Invoke(count);
         // --- Publish 메서드 ---
         public static void Publish_OreHarvested(int amount) => OnOreHarvested?.Invoke(amount);
         public static void Publish_HandcuffCrafted(int amount) => OnHandcuffCrafted?.Invoke(amount);
@@ -50,8 +54,8 @@ namespace PlayableAd.Core
         public static void Publish_GameEnd() => OnGameEnd?.Invoke();
         public static void Publish_CustomerServed(int totalCount) => OnCustomerServed?.Invoke(totalCount);
         public static void Publish_PrisonerAdded(int count) => OnPrisonerAdded?.Invoke(count);
-        public static void Publish_CameraIn() => CameraIn?.Invoke();
-        public static void Publish_CameraOut() => CameraOut?.Invoke();
+        public static void Publish_CutsceneStart() => OnCutsceneStart?.Invoke();
+        public static void Publish_CutsceneEnd() => OnCutsceneEnd?.Invoke();
     }
 
 }

@@ -1,0 +1,506 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PlayableAd.Data.MiningConfig" Collapsed="true">
+    <Position X="15.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAGAAAAAAACAAAQAAAgADABAA=</HashCode>
+      <FileName>Assets\Data\Scripts\MiningConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="JoystickPlayerExample" Collapsed="true">
+    <Position X="10" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAEAAAAAAAAAAAAAQAAAAAAAAAEAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Examples\JoystickPlayerExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="JoystickSetterExample" Collapsed="true">
+    <Position X="11.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAEAAAAAAAAAAAAAAAACAAAAAQAQAQAACAAEIAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Examples\JoystickSetterExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Joystick" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACABACIACRICAAEACBAASICAAEAADAKAQQCCAEAIAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Base\Joystick.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DynamicJoystick" Collapsed="true">
+    <Position X="0.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAACAACAIAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Joysticks\DynamicJoystick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FixedJoystick" Collapsed="true">
+    <Position X="3" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Joysticks\FixedJoystick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FloatingJoystick" Collapsed="true">
+    <Position X="5.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAACAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VariableJoystick" Collapsed="true">
+    <Position X="7.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAKAACAIAgAAAAAAAAAAAAAAAgAAACIAAAAAAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArrowTurn" Collapsed="true">
+    <Position X="11.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAABAAAAAAAAAAAAAAAAAAACAAACAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Systems\ArrowTurn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextureTilingMPB" Collapsed="true">
+    <Position X="10" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAADABAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\TexxtureTileMP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Core.CameraManager" Collapsed="true">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Core\CameraManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Core.CurrencyManager" Collapsed="true">
+    <Position X="10.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAAAAAQAAAAAAAAAgAAAAAAAAAAAAAAAAACAAAAAE=</HashCode>
+      <FileName>Assets\Scripts\Core\CurrencyManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Core.GameEventBus" Collapsed="true">
+    <Position X="11.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEEARSAAAQIAEIAAAAAIAGBBAgCKIEQAgBAgRCA=</HashCode>
+      <FileName>Assets\Scripts\Core\GameEventBus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Core.GameManager" Collapsed="true">
+    <Position X="14.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAQAAAAAAAAAAIAQAAAAAAAAAIQAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Core\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Core.PrisonManager" Collapsed="true">
+    <Position X="17" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAABQAAAAAAAAgAAAAAAAAAAAAAIAAAAAIAgiAA=</HashCode>
+      <FileName>Assets\Scripts\Core\PrisonManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Core.ResourceManager" Collapsed="true">
+    <Position X="19.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAQAABAAAAAAAACBGAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Core\ResourceManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PlayableAd.Core.SoundManager" Collapsed="true">
+    <Position X="1.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEABAAAUAAAAAxAAAAOEQEAAAAAAAgZgKAAgAgICAI=</HashCode>
+      <FileName>Assets\Scripts\Core\SoundManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Items.CoinItem" Collapsed="true">
+    <Position X="17" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Items\CoinItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Items.HandcuffItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAgAAAAAAQIACAACAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Items\HandcuffItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayableAd.Items.ItemMover" Collapsed="true">
+    <Position X="18.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAEAAAAAAAAAAEIAAAAAAIAAAAAAAAAAAACEA=</HashCode>
+      <FileName>Assets\Scripts\Items\ItemMover.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Items.OreItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAgAAAAAAQIQCBACBAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Items\OreItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayableAd.NPC.CriminalNPC" Collapsed="true">
+    <Position X="20.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EUAhAUAEgEBAIAEAEAAAIAQJAIAACAAAggACBRBAAFA=</HashCode>
+      <FileName>Assets\Scripts\NPC\CriminalNPC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.NPC.MinerNPC" Collapsed="true">
+    <Position X="2.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAxAAAAAAIAIMCAEAAAAAQAAYACAIgAwCACAAAgBFA=</HashCode>
+      <FileName>Assets\Scripts\NPC\MinerNPC.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PlayableAd.NPC.NPCNavigator" Collapsed="true">
+    <Position X="18.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQAAAAAAAAAAAAAAAAAAAABAAAIAACAYAAAABAAAEA=</HashCode>
+      <FileName>Assets\Scripts\NPC\NPCNavigator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.NPC.NPCStateMachine" Collapsed="true">
+    <Position X="1.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAACAAAYAAAABAAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\NPC\NPCStateMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.NPC.WorkerNPC" Collapsed="true">
+    <Position X="0.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAgIAgEQAAAIgAAEAAACAQQAIECCgAAwCADAiAAAVA=</HashCode>
+      <FileName>Assets\Scripts\NPC\WorkerNPC.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PlayableAd.Player.PlayerController" Collapsed="true">
+    <Position X="15.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAALAEIAAAAgAIAAAAAEIAAAAAAAIBAEAAAABCEA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Player.PlayerInventory" Collapsed="true">
+    <Position X="17" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAQMAgAAjAAQGJCYAAGCAAAogIQeBBCiEAC0A=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerInventory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Player.PlayerMiner" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQDAAQAAAIAgIAQQAEAAQIAAAABAICIQAACAAAADEA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerMiner.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayableAd.Player.StackInertia" Collapsed="true">
+    <Position X="18.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAaCAAAAAACAAACAJIEAAAAACACAAEAAAgEABGA=</HashCode>
+      <FileName>Assets\Scripts\Player\StackInertia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Player.StackSlotManager" Collapsed="true">
+    <Position X="20.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iAAIAAAACGAAACBGAAAgQAEAACAAAAAAJEAgAIBACAA=</HashCode>
+      <FileName>Assets\Scripts\Player\StackSlotManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Player.WeaponVisual" Collapsed="true">
+    <Position X="13.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAEQAAAAAAAAAAAAAQAAgAAAAAQIAACAAAQACEA=</HashCode>
+      <FileName>Assets\Scripts\Player\WeaponVisual.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Systems.ArrowGuideSystem" Collapsed="true">
+    <Position X="10" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gA0CEAEAACEDUBAABAgIIAkAAACEAgAIcCBQAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Systems\ArrowGuideSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Systems.CoinZone" Collapsed="true">
+    <Position X="18.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAEAAAAAAAACAABEQIAAAAAAAAAAAIAIQAAAQhABCoA=</HashCode>
+      <FileName>Assets\Scripts\Systems\CoinZone.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Systems.CriminalQueue" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAGAAAIwAlYAAEAQAEAAAAAAIAQAAAAAAGAI=</HashCode>
+      <FileName>Assets\Scripts\Systems\CriminalQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Systems.HandcuffFactory" Collapsed="true">
+    <Position X="13.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAEQAAAAQACAAAEAYIAAABAkKAAoIRIQAECAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Systems\HandcuffFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Systems.ItemSpawnSystem" Collapsed="true">
+    <Position X="20.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAEGAAJAEAAAAAAAAAAACQEAgIAAAAIACACgI=</HashCode>
+      <FileName>Assets\Scripts\Systems\ItemSpawnSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Systems.MiningSystem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAQAAAJggIBQAIAAAQAAAAAAAAAIQAAAAAAADAA=</HashCode>
+      <FileName>Assets\Scripts\Systems\MiningSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayableAd.Systems.OreDepositZone" Collapsed="true">
+    <Position X="20.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAACgQBEAIEABARAAAAEiYCIQAhAAAEAQAE=</HashCode>
+      <FileName>Assets\Scripts\Systems\OreDepositZone.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Systems.OreZone" Collapsed="true">
+    <Position X="13.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAADAAAAAAAAAAEAAIAACAAIAARAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Systems\OreZone.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Systems.SalesSystem" Collapsed="true">
+    <Position X="20.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAIAAAAAAAAAAAIAACAAAAAiAA=</HashCode>
+      <FileName>Assets\Scripts\Systems\SalesSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Systems.SalesZone" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAACAAAAAAgCAYAEAIAAAAJAAAAEBIAEQCAAAAAgAAA=</HashCode>
+      <FileName>Assets\Scripts\Systems\SalesZone.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayableAd.Systems.ShopZone" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAQIgAAEgCQEAAAAAAAACIIQQQAAAAQBBAAI=</HashCode>
+      <FileName>Assets\Scripts\Systems\ShopZone.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayableAd.Systems.UpgradeSystem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASDAAIAAQIAAAEAAQEAAAAAAAAAIIQQQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Systems\UpgradeSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayableAd.Systems.OreParticlePool" Collapsed="true">
+    <Position X="12.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAARAAAgAAAAAAgAAAAAAAAAAAAABAAAEAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\OreParticlaPool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Ststems.OreReservationSystem" Collapsed="true">
+    <Position X="11.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAgAAACAAAABBAAAA=</HashCode>
+      <FileName>Assets\Scripts\Systems\OreReservationSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.UI.ButtonBounce" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EACAEAAAAEAMCABIAAAQAAAAAACAAACIACAAAgAWKMA=</HashCode>
+      <FileName>Assets\Scripts\UI\ButtonBounce.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayableAd.UI.CameraDirector" Collapsed="true">
+    <Position X="15.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAACAAQQEgAAAIAABBBAIAAIAIAQAAwAAACEA=</HashCode>
+      <FileName>Assets\Scripts\UI\CameraDirector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.UI.HUDController" Collapsed="true">
+    <Position X="17" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQAAAAAACAAAAAAAAAIAAAAAAAAAAAIAAQAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\UI\HUDController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.UI.MaxIndicator" Collapsed="true">
+    <Position X="13.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AECAAAMAAMAAAAAAEAAAIgAIAAAEAAAAAQgAAAEAAEA=</HashCode>
+      <FileName>Assets\Scripts\UI\MaxIndicator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.UI.ShopPriceDisplay" Collapsed="true">
+    <Position X="15.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAgBACAAAIAAAAQACAFgIAAAoQAACQAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\UI\ShopPriceDisplay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Utils.CoroutineRunner" Collapsed="true">
+    <Position X="3.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Assets\Scripts\Utils\CoroutineRunner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Utils.ObjectPool" Collapsed="true">
+    <Position X="8" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAARAAAAABAAAAEAAAAAAAAAIAAAAAAEAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Utils\ObjectPool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Utils.ScalePopUtility" Collapsed="true">
+    <Position X="11.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\ScalePopUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Utils.ServiceLocator" Collapsed="true">
+    <Position X="13.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABQAAAAAAAAAAABAAAAAAABAABAEAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\ServiceLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayableAd.Utils.Singleton&lt;T&gt;" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAQAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Utils\Singleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="PlayableAd.Interface.ICollectable" Collapsed="true">
+    <Position X="10" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAgAAAAAAQIACAACAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\ICollectable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PlayableAd.Interface.IProcessable" Collapsed="true">
+    <Position X="11.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAgoAAAAAAACAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IProcessable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PlayableAd.Interface.IPurchasable" Collapsed="true">
+    <Position X="13.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IPurchasable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PlayableAd.Interface.IResourceContainer" Collapsed="true">
+    <Position X="15.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAABAAAAAAAACAGAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IResourceContainer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PlayableAd.Interface.ISellable" Collapsed="true">
+    <Position X="17" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\ISellable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PlayableAd.Interface.IUpgradeable" Collapsed="true">
+    <Position X="18.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAQAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IUpgradeable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PlayableAd.Interface.IWorker" Collapsed="true">
+    <Position X="20.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAEAAAAAQAAAAAAAAAgAAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IWorker.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="AxisOptions" Collapsed="true">
+    <Position X="10" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAgAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Base\Joystick.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="JoystickType" Collapsed="true">
+    <Position X="13.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAEAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayableAd.Interface.ResourceType" Collapsed="true">
+    <Position X="18.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAABAAAAAAAAAggAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\ResourceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayableAd.Interface.UpgradeType" Collapsed="true">
+    <Position X="20.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAABAAAAAAAAAAAAEAAAAAAAAAAABIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\ResourceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayableAd.Interface.NPCRole" Collapsed="true">
+    <Position X="15.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAIAAAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\ResourceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayableAd.Interface.GameStage" Collapsed="true">
+    <Position X="11.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhAAAACAAAAAAAAAAAAAAAAAAAAAAIAAAgAABAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\ResourceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayableAd.NPC.NPCState" Collapsed="true">
+    <Position X="17" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAABAAAAAAAAAAAAAAAAAAAAAAAAgAABIAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\NPC\NPCStateMachine.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

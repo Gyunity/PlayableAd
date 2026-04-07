@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb94d762f2bf17f40982034d2c94fd4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factory: {fileID: 0}
-  salesZone: {fileID: 0}
+  handcuffStackY: 0.15
+  handcuffColumnSpacing: 0.8
+  handcuffMaxPerColumn: 999
   maxHandcuff: 10

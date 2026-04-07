@@ -25,7 +25,6 @@ namespace PlayableAd.Core
 
         private void OnEnable()
         {
-            GameEventBus.OnCustomerServed += HandleCustomerServed;
         }
 
         private void OnDisable()
@@ -47,11 +46,28 @@ namespace PlayableAd.Core
                 GameEventBus.Publish_PrisonFull();
             }
         }
+        /// <summary>CriminalNPC가 수용소 입장 시 직접 호출</summary>
+        public void AddPrisoner()
+        {
+            if (IsFull) return;
 
+            CurrentCount++;
+            GameEventBus.Publish_PrisonerAdded(CurrentCount);
+            Debug.Log($"[PrisonManager] 수감자 추가: {CurrentCount}/{maxCapacity}");
+
+            if (IsFull)
+            {
+                Debug.Log("[PrisonManager] 수용소 만석!");
+                GameEventBus.Publish_StageChanged(GameStage.Stage8_PrisonExpand);
+                GameEventBus.Publish_PrisonFull();
+            }
+        }
         public void ExpandCapacity(int amount)
         {
             maxCapacity += amount;
-            GameEventBus.Publish_PrisonExpanded();
+            GameEventBus.Publish_PrisonerAdded(CurrentCount);
+            GameEventBus.Publish_StageChanged(GameStage.Stage9_End);
+
         }
     }
 

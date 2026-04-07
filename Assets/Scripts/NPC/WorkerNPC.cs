@@ -14,6 +14,8 @@ namespace PlayableAd.NPC
     {
         [Header("수갑 설정")]
         [SerializeField] private float handcuffStackY = 0.15f;
+        [SerializeField] private float handcuffColumnSpacing = 0.35f;
+        [SerializeField] private int handcuffMaxPerColumn = 999;
         [SerializeField] private int maxHandcuff = 10;
 
         public NPCRole Role => NPCRole.FactoryWorker;
@@ -23,7 +25,6 @@ namespace PlayableAd.NPC
             _handcuffCount < maxHandcuff && !PrisonManager.Instance.IsFull;
 
         public int HandcuffCount => _handcuffCount;
-
 
         private NPCNavigator _navigator;
         private readonly List<GameObject> _handcuffs = new();
@@ -37,7 +38,6 @@ namespace PlayableAd.NPC
         }
 
         public void AssignTarget(Transform target) { }
-
         public void StartWork() => TransitionTo(NPCState.MovingToFactory);
 
         public void StopWork()
@@ -55,56 +55,70 @@ namespace PlayableAd.NPC
         }
 
         // -------------------------------------------------------
-        // 수갑 수령 — HandcuffFactory.PickupRoutine에서 호출
+        // 수갑 수령
         // -------------------------------------------------------
 
         public void ReceiveHandcuff(GameObject handcuffGo)
         {
+            int currentIndex = _handcuffs.Count;
             _handcuffs.Add(handcuffGo);
 
-            var targetPos = GetNextHandcuffPosition();
-
+            var worldTargetPos = GetNextHandcuffPosition();
 
             if (handcuffGo.TryGetComponent<ItemMover>(out var mover))
-                mover.MoveTo(targetPos, onComplete: () =>
+                mover.MoveTo(worldTargetPos, onComplete: () =>
                 {
+                    if (handcuffGo == null || !handcuffGo.activeSelf) return;
 
                     handcuffGo.transform.SetParent(transform);
-                    handcuffGo.transform.localRotation = Quaternion.identity; 
+                    handcuffGo.transform.localPosition = GetHandcuffLocalPosition(currentIndex);
+                    handcuffGo.transform.localRotation = Quaternion.identity;
                 });
             else
             {
-                handcuffGo.transform.position = targetPos;
                 handcuffGo.transform.SetParent(transform);
+                handcuffGo.transform.localPosition = GetHandcuffLocalPosition(currentIndex);
                 handcuffGo.transform.localRotation = Quaternion.identity;
-
             }
+
             _handcuffCount++;
 
-            // 10개 채워지면 판매존으로 이동
             if (_handcuffCount >= maxHandcuff)
             {
-                _factory.StopPickupForWorker(); // 픽업 중단
+                _factory.StopPickupForWorker();
                 TransitionTo(NPCState.Selling);
             }
         }
+
         private Vector3 GetNextHandcuffPosition()
         {
-            int colIndex = _handcuffCount;
-            int rowIndex = _handcuffCount;
+            int colIndex = _handcuffCount / handcuffMaxPerColumn;
+            int rowIndex = _handcuffCount % handcuffMaxPerColumn;
 
-            // NPC 앞 방향으로 컬럼 배치
             var basePos = transform.position
-                        + transform.forward;
+                        + transform.forward * (handcuffColumnSpacing * (colIndex + 1));
 
             return new Vector3(
                 basePos.x,
                 transform.position.y + handcuffStackY * rowIndex,
                 basePos.z);
         }
+
+        private Vector3 GetHandcuffLocalPosition(int index)
+        {
+            int colIndex = index / handcuffMaxPerColumn;
+            int rowIndex = index % handcuffMaxPerColumn;
+
+            return new Vector3(
+                0f,
+                handcuffStackY * rowIndex,
+                handcuffColumnSpacing * (colIndex + 1));
+        }
+
         public List<GameObject> TakeAllHandcuffs()
         {
             var list = new List<GameObject>(_handcuffs);
+            list.Reverse(); 
 
             foreach (var go in _handcuffs)
                 if (go != null) go.transform.SetParent(null);
@@ -115,7 +129,6 @@ namespace PlayableAd.NPC
             return list;
         }
 
-     
         // -------------------------------------------------------
         // 상태 머신
         // -------------------------------------------------------
@@ -129,9 +142,8 @@ namespace PlayableAd.NPC
                 case NPCState.MovingToFactory:
                     MoveToFactory();
                     break;
-
                 case NPCState.Selling:
-                    MoveTo​Sales();
+                    MoveToSales();
                     break;
             }
         }
@@ -148,7 +160,7 @@ namespace PlayableAd.NPC
         }
 
         // -------------------------------------------------------
-        // 공장 이동 — 도착 시 직접 픽업 요청
+        // 공장 이동
         // -------------------------------------------------------
 
         private void MoveToFactory()
@@ -170,10 +182,7 @@ namespace PlayableAd.NPC
             _navigator.MoveTo(destination, onArrived: () =>
             {
                 Debug.Log("[WorkerNPC] 공장 도착 → 픽업 요청");
-
                 _factory.StartPickupForWorker(this);
-
-                // 수갑 10개 찰 때까지 대기
                 StartCoroutine(WaitUntilFull());
             });
         }
@@ -190,7 +199,6 @@ namespace PlayableAd.NPC
                 }
                 yield return new WaitForSeconds(0.2f);
             }
-            // ReceiveHandcuff에서 이미 Selling으로 전환됨
         }
 
         // -------------------------------------------------------
@@ -209,26 +217,22 @@ namespace PlayableAd.NPC
 
             _navigator.MoveTo(destination, onArrived: () =>
             {
-                Debug.Log("[WorkerNPC] 판매존 도착 → 판매 시작");
-
-                _salesZone.StartSellForWorker(this);
-
-                StartCoroutine(SellRoutine());
+                Debug.Log("[WorkerNPC] 판매존 도착 → 수갑 내려놓기");
+                var handcuffs = TakeAllHandcuffs();
+                StartCoroutine(DepositAndWait(handcuffs));
             });
         }
 
-
-        private IEnumerator SellRoutine()
+        private IEnumerator DepositAndWait(List<GameObject> handcuffs)
         {
-            yield return new WaitUntil(() => !_salesZone.IsSelling);
+            yield return StartCoroutine(_salesZone.DepositHandcuffs(handcuffs));
 
-            yield return null;
-            yield return new WaitUntil(() => !_salesZone.IsSelling);
+            yield return new WaitUntil(() =>
+                _salesZone.DepositedCount == 0 ||
+                PrisonManager.Instance.IsFull);
 
             Debug.Log("[WorkerNPC] 판매 완료 → 공장으로 복귀");
             TransitionTo(NPCState.MovingToFactory);
         }
-
-    
     }
 }

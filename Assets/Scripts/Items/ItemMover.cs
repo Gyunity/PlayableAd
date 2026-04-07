@@ -18,11 +18,11 @@ namespace PlayableAd.Items
             _moveCoroutine = StartCoroutine(MoveRoutine(() => targetPos, onComplete));
         }
 
-        public void MoveTo(Transform target, Action onComplete = null)
+        public void MoveFromTo(Vector3 startPos, Vector3 targetPos, Action onComplete = null)
         {
-            if (_moveCoroutine != null)
-                StopCoroutine(_moveCoroutine);
-            _moveCoroutine = StartCoroutine(MoveRoutine(() => target.position, onComplete));
+            transform.position = startPos;
+            if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
+            _moveCoroutine = StartCoroutine(MoveRoutine(() => targetPos, onComplete));
         }
 
         private IEnumerator MoveRoutine(Func<Vector3> getTarget, Action onComplete)

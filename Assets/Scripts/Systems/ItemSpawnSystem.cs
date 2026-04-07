@@ -20,7 +20,9 @@ namespace PlayableAd.Systems
         [SerializeField] private GameObject weaponShop2Zone;   // Stage7 활성화
         [SerializeField] private GameObject prisonExpandZone;  // Stage8 활성화
         [SerializeField] private GameObject endPanel; //종료 패널
-
+        [Header("확장벽")]
+        [SerializeField] private GameObject[] expandWall;
+        [SerializeField] private GameObject exitWall;
         [Header("다음 단계 안내 화살표")]
         [SerializeField] private GameObject arrowIndicator;
 
@@ -35,6 +37,10 @@ namespace PlayableAd.Systems
             workerShopZone?.SetActive(false);
             weaponShop2Zone?.SetActive(false);
             prisonExpandZone?.SetActive(false);
+            
+            for(int i = 0; i < expandWall.Length; i++)
+                expandWall[i].SetActive(false);
+
 
             // 화살표는 공장 방향 표시
             MoveArrow(handcuffFactory);
@@ -66,12 +72,12 @@ namespace PlayableAd.Systems
 
                 case GameStage.Stage5_BuyMiner:
                     minerShopZone?.SetActive(true);
-                    workerShopZone?.SetActive(true);
                     MoveArrow(minerShopZone);
                     break;
 
                 case GameStage.Stage6_BuyWorker:
                     weaponShop2Zone?.SetActive(true);
+                    workerShopZone?.SetActive(true);
                     MoveArrow(workerShopZone);
                     break;
 
@@ -85,6 +91,15 @@ namespace PlayableAd.Systems
                     break;
 
                 case GameStage.Stage9_End:
+
+                    exitWall.SetActive(false);
+
+                    for (int i = 0; i < expandWall.Length; i++)
+                        expandWall[i].SetActive(true);
+
+                    break;
+
+                case GameStage.Stage10_UI:
                     endPanel?.SetActive(true);
                     break;
             }

@@ -1,4 +1,5 @@
 ﻿using PlayableAd.Items;
+using PlayableAd.Player;
 using PlayableAd.Utils;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace PlayableAd.Systems
         private List<Transform> oreSlots;
         [SerializeField] 
         private float respawnDelay = 2f;
+        [Header("플레이어 무기 비주얼")]
+        [SerializeField] private WeaponVisual weaponVisual;
 
         private readonly Dictionary<Transform, OreItem> _slotOreMap = new();
 
@@ -26,7 +29,22 @@ namespace PlayableAd.Systems
                 SpawnAt(slot);
         }
 
-   
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag("Player")) return;
+
+            // 무기 비주얼 자동 탐색 (인스펙터 미연결 시)
+            if (weaponVisual == null)
+                weaponVisual = other.GetComponentInChildren<WeaponVisual>();
+
+            weaponVisual?.ShowWeapon();
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.CompareTag("Player")) return;
+            weaponVisual?.HideWeapon();
+        }
         private void SpawnAt(Transform slot)
         {
             var go = ObjectPool.Instance.Get("Ore", slot.position, Quaternion.identity);

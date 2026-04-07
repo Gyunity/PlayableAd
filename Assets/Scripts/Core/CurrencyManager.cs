@@ -19,6 +19,8 @@ namespace PlayableAd.Core
         {
             if (amount <= 0) return;
             _balance += amount;
+            Debug.Log($"[CurrencyManager] Add({amount}) / ภÜพื: {_balance}\n{System.Environment.StackTrace}");
+
             GameEventBus.Publish_CurrencyChanged(_balance);
         }
 

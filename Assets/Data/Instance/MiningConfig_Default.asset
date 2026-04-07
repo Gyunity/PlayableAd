@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177f1674195c9454ea20f5b7b43b8752, type: 3}
   m_Name: MiningConfig_Default
   m_EditorClassIdentifier: 
-  miningInterval: 1.6
+  miningInterval: 1
   miningRange: 1
   maxOreCount: 10
   weapon1Interval: 0.2
-  weapon1Range: 1
+  weapon1Range: 1.5
   weapon1MaxOre: 20
   weapon2Interval: 0.2
   weapon2Range: 3

@@ -1,9 +1,11 @@
-﻿using UnityEngine;
-using PlayableAd.Core;
+﻿using PlayableAd.Core;
 using PlayableAd.Interface;
 using PlayableAd.NPC;
-using System.Xml.Serialization;
+using PlayableAd.UI;
 using System.Collections;
+using System.Xml.Serialization;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace PlayableAd.Systems
 {
@@ -14,31 +16,32 @@ namespace PlayableAd.Systems
     public class ShopZone : MonoBehaviour, IPurchasable
     {
         [Header("구매 설정")]
-        [SerializeField]
-        private UpgradeType upgradeType;
-        [SerializeField]
-        private int price;
+        [SerializeField] private UpgradeType upgradeType;
+        [SerializeField] private int price;
 
         [Header("NPC 스폰")]
-        [SerializeField]
-        private GameObject minerNPCPrefab;
-        [SerializeField]
-        private GameObject workerNPCPrefab;
-        [SerializeField]
-        private Transform[] spawnPoints;
+        [SerializeField] private GameObject minerNPCPrefab;
+        [SerializeField] private GameObject workerNPCPrefab;
+        [SerializeField] private Transform[] spawnPoints;
 
-        [Header("NPC에게 주입할 씬 참조")]
-        [SerializeField] 
-        private OreDepositZone depositZone;  
-        [SerializeField] 
-        private HandcuffFactory factory;    
-        [SerializeField] 
-        private SalesZone salesZone;   
+        [Header("NPC 주입 참조")]
+        [SerializeField] private OreDepositZone depositZone;
+        [SerializeField] private HandcuffFactory factory;
+        [SerializeField] private SalesZone salesZone;
+        //[SerializeField] private CoinZone coinZone;
+
+        [Header("가격 표시")]
+        [SerializeField] private ShopPriceDisplay priceDisplay;
+
         public int Price => price;
         public bool IsPurchased { get; private set; }
 
+        private bool _playerInZone = false;
+        private Transform _playerTransform;
+        private Coroutine _payCoroutine;
+
         public bool CanPurchase(int currency)
-            => !IsPurchased && currency >= price;
+            => !IsPurchased && currency >= 0;
 
         public void Purchase()
         {
@@ -46,31 +49,87 @@ namespace PlayableAd.Systems
             GameEventBus.Publish_UpgradePurchased(upgradeType);
         }
 
+        // -------------------------------------------------------
+        // 트리거
+        // -------------------------------------------------------
+
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player")) return;
-            if (!CanPurchase(CurrencyManager.Instance.Balance)) return;
-            if (!CurrencyManager.Instance.TrySpend(price)) return;
+            if (IsPurchased) return;
+
+            _playerInZone = true;
+            _playerTransform = other.transform;
+
+            _payCoroutine = StartCoroutine(PayWhileInZone());
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.CompareTag("Player")) return;
+
+            _playerInZone = false;
+            _playerTransform = null;
+
+            if (_payCoroutine != null)
+            {
+                StopCoroutine(_payCoroutine);
+                _payCoroutine = null;
+            }
+        }
+
+        // -------------------------------------------------------
+        // 존 안에 있는 동안 계속 지불
+        // -------------------------------------------------------
+
+        private IEnumerator PayWhileInZone()
+        {
+            while (_playerInZone && !IsPurchased)
+            {
+                if (priceDisplay == null)
+                {
+                    // priceDisplay 없으면 기존 방식으로 즉시 구매
+                    if (CurrencyManager.Instance.TrySpend(price))
+                        ExecutePurchase();
+                    yield break;
+                }
+
+                if (priceDisplay.IsPaid)
+                {
+                    ExecutePurchase();
+                    yield break;
+                }
+
+                if (CurrencyManager.Instance.Balance > 0)
+                    priceDisplay.TryPay(_playerTransform);
+
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
+
+        // -------------------------------------------------------
+        // 구매 실행
+        // -------------------------------------------------------
+
+        private void ExecutePurchase()
+        {
+            if (IsPurchased) return;
 
             switch (upgradeType)
             {
                 case UpgradeType.Miner:
                     SpawnMiners();
-                    Purchase();
-                    gameObject.SetActive(false);
                     break;
-
                 case UpgradeType.Worker:
                     SpawnWorker();
-                    Purchase();
-                    gameObject.SetActive(false);
                     break;
-
                 case UpgradeType.PrisonExpand:
                     ExpandPrison();
-                    // PrisonExpand는 비활성화 안 함 — GameManager가 Stage9로 전환
-                    break;
+                    return; // 비활성화 안 함
             }
+
+            Purchase();
+            gameObject.SetActive(false);
         }
 
         private void SpawnMiners()
@@ -78,54 +137,40 @@ namespace PlayableAd.Systems
             int count = Mathf.Min(3, spawnPoints.Length);
             for (int i = 0; i < count; i++)
             {
-                var go = Instantiate(
-                    minerNPCPrefab,
-                    spawnPoints[i].position,
-                    spawnPoints[i].rotation);
+                var go = Instantiate(minerNPCPrefab,
+                              spawnPoints[i].position,
+                              spawnPoints[i].rotation);
                 var npc = go.GetComponent<MinerNPC>();
-                if (npc == null)
-                    continue;
+                if (npc == null) continue;
+
                 npc.Init(depositZone);
                 npc.StartWorkDelayed();
             }
-            Purchase();
-            gameObject.SetActive(false);
+
             GameEventBus.Publish_NPCSpawned(NPCRole.Miner, count);
-            Debug.Log($"[ShopZone] 광부 {count}명 스폰");
         }
 
         private void SpawnWorker()
         {
             if (spawnPoints.Length == 0) return;
 
-            var go = Instantiate(
-                          workerNPCPrefab,
+            var go = Instantiate(workerNPCPrefab,
                           spawnPoints[0].position,
                           spawnPoints[0].rotation);
             var npc = go.GetComponent<WorkerNPC>();
+            if (npc == null) return;
 
-            if (npc == null)
-                return;
             npc.Init(factory, salesZone);
-            npc.StartWorkDelayed(); 
+            npc.StartWorkDelayed();
 
-            Purchase();
-            gameObject.SetActive(false);
             GameEventBus.Publish_NPCSpawned(NPCRole.FactoryWorker, 1);
-            Debug.Log("[ShopZone] 동료 1명 스폰");
         }
 
         private void ExpandPrison()
         {
             PrisonManager.Instance.ExpandCapacity(20);
-            Debug.Log("[ShopZone] 수용소 확장!");
-
-            // CameraDirector가 OnPrisonExpanded 이벤트로 연출 처리
-            // GameManager가 Stage9로 전환 → EndScreenUI 표시
-            GameManager.Instance.AdvanceTo(GameStage.Stage9_End);
+            GameEventBus.Publish_PrisonExpanded();
         }
-
-     
 
     }
 

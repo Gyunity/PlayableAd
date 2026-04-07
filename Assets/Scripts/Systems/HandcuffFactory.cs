@@ -3,11 +3,13 @@ using PlayableAd.Interface;
 using PlayableAd.Items;
 using PlayableAd.NPC;
 using PlayableAd.Player;
+using PlayableAd.UI;
 using PlayableAd.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 /// <summary>
 /// 광물 반납존(OreDepositZone)에서 광물을 받아 수갑을 생산합니다.
 /// 광물 1개당 2초 후 수갑 1개 생산.
@@ -35,11 +37,22 @@ namespace PlayableAd.Systems
         [SerializeField]
         private float stackYSpacing = 0.15f;
 
+        [Header("최대 수량")]
+        [SerializeField] 
+        private int maxHandcuffCount = 100;
+
+        [Header("MAX 표시")]
+        [SerializeField] 
+        private MaxIndicator maxIndicator;
+        [Header("이미지색상")]
+        [SerializeField]
+        private Image border;
         private readonly List<GameObject> _producedHandcuffs = new();
         private bool _isProducing;
         private Coroutine _pickupCoroutine;
 
         public int ProducedCount => _producedHandcuffs.Count;
+        public bool IsFull => _producedHandcuffs.Count >= maxHandcuffCount;
 
         private void OnEnable()
         {
@@ -91,6 +104,12 @@ namespace PlayableAd.Systems
         {
             if (handcuffStackRoot == null) return;
 
+            if (IsFull)
+            {
+                maxIndicator?.Show();
+                return;
+            }
+
             var targetPos = CalculateHandcuffPosition(index);
             var go = ObjectPool.Instance.Get(
                                 "Handcuff",
@@ -104,6 +123,8 @@ namespace PlayableAd.Systems
                 mover.MoveTo(targetPos);
             else
                 go.transform.position = targetPos;
+
+            if (IsFull) maxIndicator?.Show();
         }
 
         private Vector3 CalculateHandcuffPosition(int index)
@@ -156,6 +177,7 @@ namespace PlayableAd.Systems
             // 플레이어
             if (other.CompareTag("Player"))
             {
+
                 var inventory = other.GetComponent<PlayerInventory>();
                 if (inventory == null) return;
 
@@ -170,6 +192,7 @@ namespace PlayableAd.Systems
             // WorkerNPC
             var worker = other.GetComponent<WorkerNPC>();
             if (worker == null) return;
+
 
             _pickupCoroutine = StartCoroutine(PickupRoutine(
                 canContinue: () => worker.CanPickupHandcuff,
@@ -209,6 +232,8 @@ namespace PlayableAd.Systems
 
                 var go = _producedHandcuffs[^1];
                 _producedHandcuffs.RemoveAt(_producedHandcuffs.Count - 1);
+
+                if (!IsFull) maxIndicator?.Hide();
 
                 if (go != null)
                 {

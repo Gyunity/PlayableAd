@@ -1,58 +1,58 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace PlayableAd.Player
 {
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î µî µÚ ½ºÅÃ ½½·Ô À§Ä¡¸¦ °è»êÇÕ´Ï´Ù.
-    /// µ· ÄÃ·³ ¡æ ±¤¼® ÄÃ·³ ¼ø¼­·Î ÇÃ·¹ÀÌ¾î µÚÂÊ¿¡ ¹èÄ¡µË´Ï´Ù.
+    /// í”Œë ˆì´ì–´ ë“± ë’¤ ìŠ¤íƒ ìŠ¬ë¡¯ ìœ„ì¹˜ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤.
+    /// ëˆ ì»¬ëŸ¼ â†’ ê´‘ì„ ì»¬ëŸ¼ ìˆœì„œë¡œ í”Œë ˆì´ì–´ ë’¤ìª½ì— ë°°ì¹˜ë©ë‹ˆë‹¤.
     ///
-    /// ¹èÄ¡ ±¸Á¶ (ÇÃ·¹ÀÌ¾î µÚ ¹æÇâ ±âÁØ):
-    ///   [±¤¼®N] ¡ç [±¤¼®1] [µ·N] ¡ç [µ·1] [Player]
+    /// ë°°ì¹˜ êµ¬ì¡° (í”Œë ˆì´ì–´ ë’¤ ë°©í–¥ ê¸°ì¤€):
+    ///   [ê´‘ì„N] â† [ê´‘ì„1] [ëˆN] â† [ëˆ1] [Player]
     ///   
-    /// YÃà ½ºÅÃ: °°Àº ÄÃ·³ ³»¿¡¼­ ¾ÆÀÌÅÛÀÌ À§·Î ½×ÀÔ´Ï´Ù.
-    /// ÄÃ·³ ¼ø¼­: ÇÃ·¹ÀÌ¾î¿¡¼­ ¸Ö¾îÁú¼ö·Ï µÚ¿¡ »õ ÄÃ·³ÀÌ »ı¼ºµË´Ï´Ù.
+    /// Yì¶• ìŠ¤íƒ: ê°™ì€ ì»¬ëŸ¼ ë‚´ì—ì„œ ì•„ì´í…œì´ ìœ„ë¡œ ìŒ“ì…ë‹ˆë‹¤.
+    /// ì»¬ëŸ¼ ìˆœì„œ: í”Œë ˆì´ì–´ì—ì„œ ë©€ì–´ì§ˆìˆ˜ë¡ ë’¤ì— ìƒˆ ì»¬ëŸ¼ì´ ìƒì„±ë©ë‹ˆë‹¤.
     /// </summary>
     public class StackSlotManager : MonoBehaviour
     {
-        [Header("½ºÅÃ ±âÁØÁ¡")]
+        [Header("ìŠ¤íƒ ê¸°ì¤€ì ")]
         [SerializeField]
-        private Transform playerRoot; // ÇÃ·¹ÀÌ¾î Transform
+        private Transform playerRoot; // í”Œë ˆì´ì–´ Transform
 
-        [Header("ÄÃ·³ °£°İ (ÇÃ·¹ÀÌ¾î µÚ ¹æÇâ)")]
+        [Header("ì»¬ëŸ¼ ê°„ê²© (í”Œë ˆì´ì–´ ë’¤ ë°©í–¥)")]
         [SerializeField]
-        private float columnSpacing = 0.45f; // ÄÃ·³ »çÀÌ Z °£°İ
+        private float columnSpacing = 0.45f; // ì»¬ëŸ¼ ì‚¬ì´ Z ê°„ê²©
 
-        [Header("YÃà ½ºÅÃ °£°İ")]
+        [Header("Yì¶• ìŠ¤íƒ ê°„ê²©")]
         [SerializeField]
-        private float coinStackY = 0.12f;  // µ· ¾ÆÀÌÅÛ ³ôÀÌ °£°İ
+        private float coinStackY = 0.12f;  // ëˆ ì•„ì´í…œ ë†’ì´ ê°„ê²©
         [SerializeField]
-        private float oreStackY = 0.18f;  // ±¤¼® ¾ÆÀÌÅÛ ³ôÀÌ °£°İ
+        private float oreStackY = 0.18f;  // ê´‘ì„ ì•„ì´í…œ ë†’ì´ ê°„ê²©
 
-        [Header("ÄÃ·³´ç ÃÖ´ë ³ôÀÌ (°³¼ö)")]
-        [SerializeField] private int maxPerColumn = 10; // 10°³¸¶´Ù »õ ÄÃ·³
+        [Header("ì»¬ëŸ¼ë‹¹ ìµœëŒ€ ë†’ì´ (ê°œìˆ˜)")]
+        [SerializeField] private int maxPerColumn = 10; // 10ê°œë§ˆë‹¤ ìƒˆ ì»¬ëŸ¼
 
         private int _coinCount;
         private int _oreCount;
 
-        // ¹Ù´Ú ±âÁØ ³ôÀÌ (ÇÃ·¹ÀÌ¾î¿Í °°Àº Y)
+        // ë°”ë‹¥ ê¸°ì¤€ ë†’ì´ (í”Œë ˆì´ì–´ì™€ ê°™ì€ Y)
         private float BaseY => playerRoot.position.y;
 
-        /// <summary>ÇöÀç µ· °³¼ö ±âÁØ ´ÙÀ½ µ· ¾ÆÀÌÅÛÀÌ ³õÀÏ ¿ùµå À§Ä¡ ¹İÈ¯</summary>
+        /// <summary>í˜„ì¬ ëˆ ê°œìˆ˜ ê¸°ì¤€ ë‹¤ìŒ ëˆ ì•„ì´í…œì´ ë†“ì¼ ì›”ë“œ ìœ„ì¹˜ ë°˜í™˜</summary>
         public Vector3 GetNextCoinPosition()
         {
-            int colIndex = _coinCount / maxPerColumn;          // ¸î ¹øÂ° ÄÃ·³
-            int rowIndex = _coinCount % maxPerColumn;          // ÄÃ·³ ³» ¸î ¹øÂ°
+            int colIndex = _coinCount / maxPerColumn;          // ëª‡ ë²ˆì§¸ ì»¬ëŸ¼
+            int rowIndex = _coinCount % maxPerColumn;          // ì»¬ëŸ¼ ë‚´ ëª‡ ë²ˆì§¸
             _coinCount++;
             return CalculatePosition(colIndex, rowIndex, coinStackY);
         }
 
-        /// <summary>ÇöÀç ±¤¼® °³¼ö ±âÁØ ´ÙÀ½ ±¤¼® ¾ÆÀÌÅÛÀÌ ³õÀÏ ¿ùµå À§Ä¡ ¹İÈ¯</summary>
+        /// <summary>í˜„ì¬ ê´‘ì„ ê°œìˆ˜ ê¸°ì¤€ ë‹¤ìŒ ê´‘ì„ ì•„ì´í…œì´ ë†“ì¼ ì›”ë“œ ìœ„ì¹˜ ë°˜í™˜</summary>
         public Vector3 GetNextOrePosition()
         {
-            // ±¤¼® ÄÃ·³Àº µ· ÄÃ·³ µÚ¿¡¼­ ½ÃÀÛ
+            // ê´‘ì„ ì»¬ëŸ¼ì€ ëˆ ì»¬ëŸ¼ ë’¤ì—ì„œ ì‹œì‘
             int coinColumns = Mathf.Max(1, Mathf.CeilToInt((float)_coinCount / maxPerColumn));
-            int colOffset = coinColumns; // µ· ÄÃ·³ ¼ö¸¸Å­ µÚ¿¡¼­ ½ÃÀÛ
+            int colOffset = coinColumns; // ëˆ ì»¬ëŸ¼ ìˆ˜ë§Œí¼ ë’¤ì—ì„œ ì‹œì‘
 
             int colIndex = _oreCount / maxPerColumn;
             int rowIndex = _oreCount % maxPerColumn;
@@ -60,7 +60,7 @@ namespace PlayableAd.Player
             return CalculatePosition(colOffset + colIndex, rowIndex, oreStackY);
         }
 
-        /// <summary>µ·/±¤¼® Á¦°Å ½Ã Ä«¿îÆ® °¨¼Ò (½ºÅÃ ÀçÁ¤·ÄÀº RefreshStack È£Ãâ)</summary>
+        /// <summary>ëˆ/ê´‘ì„ ì œê±° ì‹œ ì¹´ìš´íŠ¸ ê°ì†Œ (ìŠ¤íƒ ì¬ì •ë ¬ì€ RefreshStack í˜¸ì¶œ)</summary>
         public void RemoveCoin(int count = 1) => _coinCount = Mathf.Max(0, _coinCount - count);
         public void RemoveOre(int count = 1) => _oreCount = Mathf.Max(0, _oreCount - count);
 
@@ -71,20 +71,66 @@ namespace PlayableAd.Player
         public int OreCount => _oreCount;
 
         // -------------------------------------------------------
-        // ³»ºÎ °è»ê
+        // ë‚´ë¶€ ê³„ì‚°
         // -------------------------------------------------------
 
         private Vector3 CalculatePosition(int colIndex, int rowIndex, float stackYSpacing)
         {
             var backDir = -playerRoot.forward;
             var basePos = playerRoot.position
-                        + backDir * (columnSpacing * (colIndex + 1)); // ÄÃ·³ À§Ä¡
+                        + backDir * (columnSpacing * (colIndex + 1));
 
             return new Vector3(
                 basePos.x,
-                BaseY + stackYSpacing * rowIndex, // YÃà ´©Àû
-                basePos.z
-            );
+                BaseY + stackYSpacing * rowIndex,
+                basePos.z);
         }
+        /// <summary>ë¡œì»¬ ì¢Œí‘œ ë°˜í™˜ â€” SetParent í›„ localPositionì— ì ìš©</summary>
+        public Vector3 GetNextOreLocalPosition()
+        {
+            // ì›”ë“œ ì¢Œí‘œë¥¼ ë¡œì»¬ ì¢Œí‘œë¡œ ë³€í™˜
+            var worldPos = GetNextOrePosition();
+            return playerRoot.InverseTransformPoint(worldPos);
+        }
+
+        public Vector3 GetNextCoinLocalPosition()
+        {
+            int coinColumns = Mathf.Max(1, Mathf.CeilToInt((float)_oreCount / maxPerColumn));
+            int colOffset = coinColumns;
+
+            int colIndex = _coinCount / maxPerColumn;
+            int rowIndex = _coinCount % maxPerColumn;
+            _coinCount++;
+
+            return CalculatePosition(colOffset + colIndex, rowIndex, coinStackY);
+        }
+
+        /// <summary>í”Œë ˆì´ì–´ ê¸°ì¤€ ë¡œì»¬ ì¢Œí‘œ ë°˜í™˜</summary>
+        public Vector3 GetLocalPositionForOre(int index)
+        {
+            int oreColumns = Mathf.Max(1, Mathf.CeilToInt((float)_oreCount / maxPerColumn));
+            int colOffset = oreColumns;
+
+            int colIndex = index / maxPerColumn;
+            int rowIndex = index % maxPerColumn;
+
+            return new Vector3(
+                0f,
+                coinStackY * rowIndex,
+                -columnSpacing * (colOffset + colIndex + 1));
+        }
+
+        public Vector3 GetLocalPositionForCoin(int index)
+        {
+            int colIndex = index / maxPerColumn;
+            int rowIndex = index % maxPerColumn;
+
+            // ë¡œì»¬ -z = í”Œë ˆì´ì–´ ë’¤ (ì½”ì¸ì€ ê´‘ì„ ë’¤ì— ìŒ“ì„)
+            return new Vector3(
+                0f,
+                coinStackY * rowIndex,
+                -columnSpacing * (colIndex + 1));
+        }
+   
     }
 }

@@ -8,29 +8,32 @@ namespace PlayableAd.UI
     {
         [Header("텍스트 UI")]
         [SerializeField] private TextMeshProUGUI currencyText;    // 돈
-        [SerializeField] private TextMeshPro customerText;    // 판매 고객 수
+        [SerializeField] private TextMeshPro prisonerText;    // 판매 고객 수
 
         private void OnEnable()
         {
             GameEventBus.OnCurrencyChanged += HandleCurrencyChanged;
-            GameEventBus.OnCustomerServed += HandleCustomerServed;
+            GameEventBus.OnPrisonerAdded += HandlePrisonerAdded;
         }
 
         private void OnDisable()
         {
             GameEventBus.OnCurrencyChanged -= HandleCurrencyChanged;
-            GameEventBus.OnCustomerServed -= HandleCustomerServed;
+            GameEventBus.OnPrisonerAdded -= HandlePrisonerAdded;
         }
 
         private void Start()
         {
             // 초기값 세팅
             UpdateCurrencyText(CurrencyManager.Instance.Balance);
-            UpdateCustomerText(0);
+            UpdatePrisonerText(
+              PrisonManager.Instance.CurrentCount,
+              PrisonManager.Instance.MaxCapacity);
         }
 
         private void HandleCurrencyChanged(int balance) => UpdateCurrencyText(balance);
-        private void HandleCustomerServed(int total) => UpdateCustomerText(total);
+        private void HandlePrisonerAdded(int currentCount)
+               => UpdatePrisonerText(currentCount, PrisonManager.Instance.MaxCapacity);
 
         private void UpdateCurrencyText(int balance)
         {
@@ -38,10 +41,15 @@ namespace PlayableAd.UI
                 currencyText.text = $"{balance}";
         }
 
-        private void UpdateCustomerText(int total)
+        private void UpdatePrisonerText(int current, int max)
         {
-            if (customerText != null)
-                customerText.text = $"{total}/ 20";
+            if (prisonerText != null)
+            {
+                prisonerText.text = $"{current}/{max}";
+                prisonerText.color = current == max ? Color.red : Color.black;
+            }
+
+
         }
     }
 }

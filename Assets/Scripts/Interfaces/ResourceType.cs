@@ -34,6 +34,7 @@ namespace PlayableAd.Interface
         Stage6_BuyWorker,
         Stage7_WeaponUpgrade2,
         Stage8_PrisonExpand,
-        Stage9_End
+        Stage9_End,
+        Stage10_UI,
     }
 }

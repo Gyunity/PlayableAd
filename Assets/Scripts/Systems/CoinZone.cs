@@ -29,12 +29,12 @@ namespace PlayableAd.Systems
 
         private void OnEnable()
         {
-            GameEventBus.OnItemSold += HandleItemSold;
+           // GameEventBus.OnItemSold += HandleItemSold;
         }
 
         private void OnDisable()
         {
-            GameEventBus.OnItemSold -= HandleItemSold;
+           // GameEventBus.OnItemSold -= HandleItemSold;
         }
 
         private void HandleItemSold(int amount)
@@ -67,7 +67,35 @@ namespace PlayableAd.Systems
             else
                 go.transform.position = pos;
         }
+        private IEnumerator CollectRoutine(PlayerInventory inventory)
+        {
+            inventory.SetCollectingFromCoinZone(true);
 
+            while (_coinStack.Count > 0 && _pendingAmount > 0)
+            {
+                var go = _coinStack[^1];
+                _coinStack.RemoveAt(_coinStack.Count - 1);
+
+                if (go != null && go.TryGetComponent<ItemMover>(out var mover))
+                {
+                    mover.MoveTo(inventory.transform.position, onComplete: () =>
+                        ObjectPool.Instance.Return(go));
+                }
+                else if (go != null)
+                    ObjectPool.Instance.Return(go);
+
+                _pendingAmount -= coinPer;
+                CurrencyManager.Instance.Add(coinPer);
+
+                yield return new WaitForSeconds(0.06f);
+            }
+
+            _pendingAmount = 0;
+
+            inventory.SetCollectingFromCoinZone(false);
+
+            inventory.SyncCoinStack();
+        }
         private Vector3 CalculatePosition(int index)
         {
             int col = index % 2;
@@ -103,24 +131,6 @@ namespace PlayableAd.Systems
             StopAllCoroutines();
         }
 
-        private IEnumerator CollectRoutine(PlayerInventory inventory)
-        {
-            while (_coinStack.Count > 0 && _pendingAmount > 0)
-            {
-                var go = _coinStack[^1];
-                _coinStack.RemoveAt(_coinStack.Count - 1);
-
-                if (go != null)
-                    ObjectPool.Instance.Return(go);
-
-                // 100원 수령
-                _pendingAmount -= coinPer;
-                CurrencyManager.Instance.Add(coinPer);
-
-                yield return new WaitForSeconds(0.05f);
-            }
-
-            _pendingAmount = 0;
-        }
+        
     }
 }

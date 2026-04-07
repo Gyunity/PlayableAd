@@ -1,7 +1,9 @@
 ﻿using PlayableAd.Core;
 using PlayableAd.Interface;
 using PlayableAd.Items;
+using PlayableAd.UI;
 using PlayableAd.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +18,7 @@ namespace PlayableAd.Player
 
         [Header("판매 후 돈 스폰 설정")]
         [SerializeField] private int coinSpawnPer = 10;
+        private bool _collectingFromCoinZone = false;
 
         private StackSlotManager _slotManager;
 
@@ -28,6 +31,13 @@ namespace PlayableAd.Player
         [SerializeField] private float handcuffColumnSpacing = 0.4f;
         [SerializeField] private int handcuffMaxPerColumn = 5;
 
+        [Header("MAX 표시")]
+        [SerializeField] private MaxIndicator oreMaxIndicator;
+        [Header("수갑 고정 방향")]
+        [SerializeField] private Vector3 fixedHandcuffDirection = Vector3.forward; // 월드 +Z 고정
+
+        public List<GameObject> GetOreStack() => _oreStack;
+        public List<GameObject> GetCoinStack() => _coinStack;
         private readonly List<GameObject> _handcuffStack = new();
         private int _handcuffCount = 0;
 
@@ -56,44 +66,61 @@ namespace PlayableAd.Player
         {
             for (int i = 0; i < amount; i++)
                 SpawnOreVisual();
+
+            var current = ResourceManager.Instance.GetAmount(ResourceType.Ore);
+            var max = ResourceManager.Instance.GetMax(ResourceType.Ore);
+            if (current >= max || amount == 0)
+                oreMaxIndicator?.Show();
         }
 
+        
         private void SpawnOreVisual()
         {
-            var targetPos = _slotManager.GetNextOrePosition();
+            var worldTargetPos = _slotManager.GetNextOrePosition();
             var go = ObjectPool.Instance.Get(
-                                orePoolKey,
-                                transform.position,
-                                transform.rotation); 
-
+                                     orePoolKey, transform.position, Quaternion.identity);
             if (go == null) return;
 
             if (go.TryGetComponent<OreItem>(out var ore))
                 ore.SetCollectable(false);
 
             _oreStack.Add(go);
+            int index = _oreStack.Count - 1;
 
-            if (go.TryGetComponent<ItemMover>(out var mover))
-                mover.MoveTo(targetPos, onComplete: () =>
-                {
-                    if (go != null && go.activeSelf)
-                    {
-                        go.transform.SetParent(transform, true);
-                        go.transform.localRotation = Quaternion.identity; 
-                    }
-                });
-            else
-            {
-                go.transform.position = targetPos;
-                go.transform.SetParent(transform, true);
-                go.transform.localRotation = Quaternion.identity;
-            }
+            go.transform.position = worldTargetPos;
+            go.transform.SetParent(transform);
+            go.transform.localPosition = _slotManager.GetLocalPositionForOre(index);
+            go.transform.localRotation = Quaternion.identity;
+
+            StartCoroutine(ScalePopRoutine(go));
         }
+        private IEnumerator ScalePopRoutine(GameObject go)
+        {
+            if (go == null) yield break;
 
+            float duration = 0.25f;
+            float elapsed = 0f;
+            var startScale = Vector3.one * 1.5f;
+            var endScale = Vector3.one * 1.0f;
 
+            go.transform.localScale = startScale;
 
-        
+            while (elapsed < duration)
+            {
+                if (go == null || !go.activeSelf) yield break;
 
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+
+                float easedT = 1f - Mathf.Pow(1f - t, 3f);
+                go.transform.localScale = Vector3.Lerp(startScale, endScale, easedT);
+
+                yield return null;
+            }
+
+            if (go != null && go.activeSelf)
+                go.transform.localScale = endScale;
+        }
         public void ClearOreStack()
         {
             foreach (var go in _oreStack)
@@ -104,19 +131,27 @@ namespace PlayableAd.Player
             }
             _oreStack.Clear();
             _slotManager.ClearOres();
+            oreMaxIndicator?.Hide();
         }
 
-        public void RefreshOreStack()
+        public List<GameObject> TakeOresForDeposit()
         {
-            _slotManager.ClearOres();
+            var list = new List<GameObject>();
+
             foreach (var go in _oreStack)
             {
-                var targetPos = _slotManager.GetNextOrePosition();
-                if (go.TryGetComponent<ItemMover>(out var mover))
-                    mover.MoveTo(targetPos);
-                else
-                    go.transform.localPosition = targetPos - transform.position;
+                if (go == null || !go.activeSelf) continue;
+                go.transform.SetParent(null);
+                list.Add(go);
             }
+
+            list.Reverse();
+
+            _oreStack.Clear();
+            _slotManager.ClearOres();
+            oreMaxIndicator?.Hide();
+
+            return list;
         }
 
         // -------------------------------------------------------
@@ -125,40 +160,47 @@ namespace PlayableAd.Player
 
         private void HandleCurrencyChanged(int balance)
         {
+            if (_collectingFromCoinZone) return;
+
             int targetCount = balance / coinSpawnPer;
             while (_coinStack.Count < targetCount) SpawnCoinVisual();
             while (_coinStack.Count > targetCount) RemoveLastCoin();
         }
 
+
         private void SpawnCoinVisual()
         {
             var targetPos = _slotManager.GetNextCoinPosition();
             var go = ObjectPool.Instance.Get(
-                                coinPoolKey,
-                                transform.position,
-                                transform.rotation); 
-
+                                coinPoolKey, transform.position, transform.rotation);
             if (go == null) return;
 
             _coinStack.Add(go);
 
+            int currentIndex = _coinStack.Count - 1;
+
             if (go.TryGetComponent<ItemMover>(out var mover))
                 mover.MoveTo(targetPos, onComplete: () =>
                 {
-                    if (go != null && go.activeSelf)
-                    {
-                        go.transform.SetParent(transform, true);
-                        go.transform.localRotation = Quaternion.identity; 
-                    }
+                    if (go == null || !go.activeSelf) return;
+                    go.transform.SetParent(transform);
+                    go.transform.localPosition = _slotManager.GetLocalPositionForCoin(currentIndex);
+                    go.transform.localRotation = Quaternion.identity;
+
+                    StartCoroutine(ScalePopUtility.ScalePop(go));
                 });
             else
             {
-                go.transform.position = targetPos;
-                go.transform.SetParent(transform, true);
+                go.transform.SetParent(transform);
+                go.transform.localPosition = _slotManager.GetLocalPositionForCoin(currentIndex);
                 go.transform.localRotation = Quaternion.identity;
+                StartCoroutine(ScalePopUtility.ScalePop(go));
             }
         }
-
+        public void SetCollectingFromCoinZone(bool value)
+        {
+            _collectingFromCoinZone = value;
+        }
         private void RemoveLastCoin()
         {
             if (_coinStack.Count == 0) return;
@@ -184,28 +226,50 @@ namespace PlayableAd.Player
                     go.transform.localPosition = targetPos - transform.position;
             }
         }
+        public void SyncCoinStack()
+        {
+            int targetCount = CurrencyManager.Instance.Balance / coinSpawnPer;
 
+            while (_coinStack.Count < targetCount) SpawnCoinVisual();
+            while (_coinStack.Count > targetCount) RemoveLastCoin();
+        }
         // -------------------------------------------------------
         // 수갑 스택 (플레이어 앞)
         // -------------------------------------------------------
 
         public void ReceiveHandcuff(GameObject handcuffGo)
         {
-            var targetPos = GetNextHandcuffPosition();
+            var worldTargetPos = GetNextHandcuffPosition();
+            int currentIndex = _handcuffStack.Count;
 
             if (handcuffGo.TryGetComponent<ItemMover>(out var mover))
-                mover.MoveTo(targetPos, onComplete: () =>
+                mover.MoveTo(worldTargetPos, onComplete: () =>
                 {
-                    handcuffGo.transform.SetParent(transform, true);
-                    handcuffGo.transform.localRotation = Quaternion.identity; 
+                    if (handcuffGo == null || !handcuffGo.activeSelf) return;
+
+                    handcuffGo.transform.SetParent(transform);
+                    handcuffGo.transform.localPosition = GetHandcuffLocalPosition(currentIndex);
+                    handcuffGo.transform.localRotation = Quaternion.identity;
                     _handcuffStack.Add(handcuffGo);
+
+                    StartCoroutine(ScalePopUtility.ScalePop(handcuffGo));
+                    SoundManager.Instance.PlayHandcuffDeposit();
+
+                    if (_handcuffStack.Count == 1)
+                        GameEventBus.Publish_HandcuffReceived();
                 });
             else
             {
-                handcuffGo.transform.position = targetPos;
-                handcuffGo.transform.SetParent(transform, true);
+                handcuffGo.transform.SetParent(transform);
+                handcuffGo.transform.localPosition = GetHandcuffLocalPosition(currentIndex);
                 handcuffGo.transform.localRotation = Quaternion.identity;
                 _handcuffStack.Add(handcuffGo);
+
+                StartCoroutine(ScalePopUtility.ScalePop(handcuffGo));
+                SoundManager.Instance.PlayHandcuffDeposit();
+
+                if (_handcuffStack.Count == 1)
+                    GameEventBus.Publish_HandcuffReceived();
             }
         }
 
@@ -215,7 +279,6 @@ namespace PlayableAd.Player
             int rowIndex = _handcuffCount % handcuffMaxPerColumn;
             _handcuffCount++;
 
-            // 항상 플레이어 forward 방향 사용
             var basePos = handcuffStackRoot.position
                         + transform.forward * (handcuffColumnSpacing * (colIndex + 1));
 
@@ -223,6 +286,17 @@ namespace PlayableAd.Player
                 basePos.x,
                 handcuffStackRoot.position.y + handcuffStackY * rowIndex,
                 basePos.z);
+        }
+
+        private Vector3 GetHandcuffLocalPosition(int index)
+        {
+            int colIndex = index / handcuffMaxPerColumn;
+            int rowIndex = index % handcuffMaxPerColumn;
+
+            return new Vector3(
+                0f,
+                handcuffStackY * rowIndex,
+                handcuffColumnSpacing * (colIndex + 1));
         }
 
         public void RegisterHandcuff(GameObject go)
@@ -245,11 +319,13 @@ namespace PlayableAd.Player
                 ObjectPool.Instance.Return(go);
             }
         }
+
         public List<GameObject> TakeAllHandcuffs()
         {
             var list = new List<GameObject>(_handcuffStack);
 
-            // 스택 초기화 (오브젝트는 SalesZone이 관리)
+            list.Reverse();
+
             foreach (var go in _handcuffStack)
                 if (go != null) go.transform.SetParent(null);
 
@@ -258,6 +334,8 @@ namespace PlayableAd.Player
 
             return list;
         }
+
+
         // -------------------------------------------------------
         // 전체 초기화
         // -------------------------------------------------------

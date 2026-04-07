@@ -1,4 +1,4 @@
-using PlayableAd.Core;
+ï»¿using PlayableAd.Core;
 using PlayableAd.Interface;
 using PlayableAd.Systems;
 using PlayableAd.Utils;
@@ -21,12 +21,22 @@ namespace PlayableAd.Items
         public bool Collect(GameObject collector)
         {
             if (!IsCollectable) return false;
-            if (ResourceManager.Instance == null) return false;
-            if (!ResourceManager.Instance.TryAdd(ResourceType, CollectAmount))
-                return false;
 
             IsCollectable = false;
-            OnCollected();
+
+            bool isMax = ResourceManager.Instance.GetAmount(ResourceType.Ore)
+                      >= ResourceManager.Instance.GetMax(ResourceType.Ore);
+
+            if (!isMax)
+            {
+                ResourceManager.Instance.TryAdd(ResourceType, CollectAmount);
+                OnCollected();
+            }
+            else
+            {
+                OnCollectedVisualOnly();
+            }
+
             return true;
         }
         public void HarvestByNPC()
@@ -35,19 +45,34 @@ namespace PlayableAd.Items
 
             IsCollectable = false;
 
-            // OreZone ¸®½ºÆù Äİ¹é ½ÇÇà (Ã¤±¼ ÈÄ ¸®½ºÆù Å¸ÀÌ¸Ó ½ÃÀÛ)
+            // OreZone ë¦¬ìŠ¤í° ì½œë°± ì‹¤í–‰ (ì±„êµ´ í›„ ë¦¬ìŠ¤í° íƒ€ì´ë¨¸ ì‹œì‘)
             OnCollectedCallback?.Invoke();
             OnCollectedCallback = null;
         }
         public void OnCollected()
         {
+            if (TryGetComponent<ItemMover>(out var mover))
+                mover.StopMove();
+
+            OreParticlePool.Instance.PlayAt(transform.position);
             GameEventBus.Publish_OreHarvested(CollectAmount);
 
             OnCollectedCallback?.Invoke();
+            OnCollectedCallback = null;
             ObjectPool.Instance.Return(gameObject);
-
         }
+        /// <summary>MAX ìƒíƒœ â€” íŒŒí‹°í´ë§Œ ì¬ìƒ, ìˆ˜ëŸ‰ ì¶”ê°€ ì—†ìŒ</summary>
+        private void OnCollectedVisualOnly()
+        {
+            if (TryGetComponent<ItemMover>(out var mover))
+                mover.StopMove();
 
+            OreParticlePool.Instance.PlayAt(transform.position);
+            GameEventBus.Publish_OreHarvested(0);
+            OnCollectedCallback?.Invoke();
+            OnCollectedCallback = null;
+            ObjectPool.Instance.Return(gameObject);
+        }
         public void ResetCollectable()
         {
             IsCollectable = true;

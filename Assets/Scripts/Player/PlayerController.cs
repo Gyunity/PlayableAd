@@ -1,25 +1,28 @@
+ï»¿using PlayableAd.Core;
 using UnityEngine;
 
 namespace PlayableAd.Player
 {
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ÀÌµ¿¸¸ ´ã´çÇÕ´Ï´Ù (SRP).
-    /// ÇÃ·¹ÀÌ¾îºí ±¤°í Æ¯¼º»ó ÅÍÄ¡/¸¶¿ì½º µå·¡±×·Î Á¶ÀÛÇÕ´Ï´Ù.
+    /// í”Œë ˆì´ì–´ ì´ë™ë§Œ ë‹´ë‹¹í•©ë‹ˆë‹¤ (SRP).
+    /// í”Œë ˆì´ì–´ë¸” ê´‘ê³  íŠ¹ì„±ìƒ í„°ì¹˜/ë§ˆìš°ìŠ¤ ë“œë˜ê·¸ë¡œ ì¡°ì‘í•©ë‹ˆë‹¤.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
-        [Header("ÀÌµ¿ ¼³Á¤")]
+        [Header("ì´ë™ ì„¤ì •")]
         [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private float rotateSpeed = 720f;  // deg/sec
+        [SerializeField] private float rotateSpeed = 720f;  
 
         private CharacterController _cc;
         private Vector3 _moveDir;
         private Camera _cam;
 
-        // ÅÍÄ¡ µå·¡±× »óÅÂ
+        // í„°ì¹˜ ë“œë˜ê·¸ ìƒíƒœ
         private Vector2 _dragStart;
         private bool _isDragging;
+
+        private bool _inputBlocked = false;
 
         private void Awake()
         {
@@ -27,8 +30,44 @@ namespace PlayableAd.Player
             _cam = Camera.main;
         }
 
+        private void OnEnable()
+        {
+            GameEventBus.OnCutsceneStart += BlockInput;
+            GameEventBus.OnCutsceneEnd += UnblockInput;
+        }
+
+        private void OnDisable()
+        {
+            GameEventBus.OnCutsceneStart -= BlockInput;
+            GameEventBus.OnCutsceneEnd -= UnblockInput;
+        }
+
+        private void BlockInput()
+        {
+            _inputBlocked = true;
+            _moveDir = Vector3.zero;
+
+            _isDragging = false;
+            _dragStart = Vector2.zero;
+        }
+
+        private void UnblockInput()
+        {
+            _inputBlocked = false;
+
+            _moveDir = Vector3.zero;
+            _isDragging = false;
+            _dragStart = Vector2.zero;
+        }
+
         private void Update()
         {
+            if (_inputBlocked)
+            {
+                ApplyGravity();
+                return;
+            }
+
             HandleInput();
             Move();
         }
@@ -36,7 +75,6 @@ namespace PlayableAd.Player
         private void HandleInput()
         {
 #if UNITY_EDITOR || UNITY_STANDALONE
-            // ¿¡µğÅÍ: ¸¶¿ì½º µå·¡±×
             if (Input.GetMouseButtonDown(0))
             {
                 _dragStart = Input.mousePosition;
@@ -54,13 +92,15 @@ namespace PlayableAd.Player
                 _moveDir = Vector3.zero;
             }
 #else
-            // ¸ğ¹ÙÀÏ: ÅÍÄ¡
             if (Input.touchCount > 0)
             {
                 var touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Began)  _dragStart = touch.position;
-                if (touch.phase == TouchPhase.Ended)  { _moveDir = Vector3.zero; return; }
-
+                if (touch.phase == TouchPhase.Began) _dragStart = touch.position;
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    _moveDir = Vector3.zero;
+                    return;
+                }
                 var delta = touch.position - _dragStart;
                 _moveDir  = new Vector3(delta.x, 0f, delta.y).normalized;
             }
@@ -73,18 +113,26 @@ namespace PlayableAd.Player
 
         private void Move()
         {
-            if (_moveDir == Vector3.zero) return;
+            if (_moveDir == Vector3.zero)
+            {
+                ApplyGravity();
+                return;
+            }
 
-            // Áß·Â Àû¿ë
             var motion = _moveDir * moveSpeed;
             motion.y = Physics.gravity.y;
-
             _cc.Move(motion * Time.deltaTime);
 
-            // ÀÌµ¿ ¹æÇâÀ¸·Î È¸Àü
             var targetRot = Quaternion.LookRotation(_moveDir);
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
         }
+
+        // ì´ë™ ì—†ì„ ë•Œë„ ì¤‘ë ¥ ì ìš©
+        private void ApplyGravity()
+        {
+            _cc.Move(new Vector3(0, Physics.gravity.y, 0) * Time.deltaTime);
+        }
+
     }
 }

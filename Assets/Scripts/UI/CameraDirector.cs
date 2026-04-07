@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-using System.Collections;
-using UnityEngine;
+﻿
 using Cinemachine;
 using PlayableAd.Core;
+using PlayableAd.Interface;
+using System.Collections;
+using UnityEngine;
 
 namespace PlayableAd.UI
 {
@@ -61,7 +59,6 @@ namespace PlayableAd.UI
 
         private void HandleCurrencyChanged(int balance)
         {
-            // ✅ 처음 돈을 얻었을 때 1회만 실행
             if (_weaponShopShown) return;
             if (balance <= 0) return;
 
@@ -92,6 +89,10 @@ namespace PlayableAd.UI
         private IEnumerator CutsceneRoutine(CinemachineVirtualCamera targetVcam)
         {
             _isPlaying = true;
+            Debug.Log("[CameraDirector] 컷씬 시작 → 입력 차단 이벤트 발행");
+
+            GameEventBus.Publish_CutsceneStart();
+
 
             // 플레이어 카메라 낮추고 연출 카메라 올리기
             vcamPlayer.Priority = PRIORITY_OFF;
@@ -99,12 +100,23 @@ namespace PlayableAd.UI
 
             yield return new WaitForSeconds(cutsceneDuration);
 
+            if(targetVcam == vcamPrisonExpand)
+            {
+                yield return new WaitForSeconds(2f);
+                GameManager.Instance.AdvanceTo(GameStage.Stage10_UI);
+                yield break;
+            }
+
             // 플레이어 카메라로 복귀
             targetVcam.Priority = PRIORITY_OFF;
             vcamPlayer.Priority = PRIORITY_NORMAL;
 
             // 블렌딩 완료까지 잠시 대기
             yield return new WaitForSeconds(0.5f);
+            Debug.Log("[CameraDirector] 컷씬 종료 → 입력 해제 이벤트 발행");
+
+            GameEventBus.Publish_CutsceneEnd();
+
 
             _isPlaying = false;
         }

@@ -6,7 +6,9 @@ using PlayableAd.Player;
 using PlayableAd.Utils;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace PlayableAd.Systems
@@ -14,83 +16,61 @@ namespace PlayableAd.Systems
 
     public class SalesZone : MonoBehaviour, ISellable
     {
-        [Header("판매 설정")]
-        [SerializeField]
-        private int sellAmountPerCustomer = 4;    
-        [SerializeField]
-        private int revenuePerCustomer = 100;  
-        [SerializeField]
-        private float saleInterval = 0.8f;
-
-        [Header("수갑 내려놓는 위치")]
+        [Header("수갑 배치 설정")]
         [SerializeField] private Transform depositRoot;
         [SerializeField] private float columnSpacing = 0.4f;
         [SerializeField] private float rowSpacing = 0.4f;
+        [SerializeField] private float stackYSpacing = 0.15f;
+
+        [SerializeField] private Image border;
 
         // --- ISellable ---
         public ResourceType SellResourceType => ResourceType.Handcuff;
-        public int SellAmountPerCustomer => sellAmountPerCustomer;
-        public int RevenuePerCustomer => revenuePerCustomer;
-        public bool IsSelling => _isSelling;
-
-        // 누적 고객 수 (게임 전체에서 계속 카운팅)
-        public int TotalCustomerCount { get; private set; } = 0;
+        public int SellAmountPerCustomer => 4;
+        public int RevenuePerCustomer => 100;
 
         private readonly List<GameObject> _depositedHandcuffs = new();
-        private bool _isSelling;
-        private Coroutine _saleCoroutine;
+
+        // -------------------------------------------------------
+        // 수갑 내려놓기 (플레이어/WorkerNPC가 존 진입 시)
+        // -------------------------------------------------------
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"[SalesZone] 트리거 감지: {other.gameObject.name}");
-
             // 플레이어
             if (other.CompareTag("Player"))
             {
+                border.color = new Color(0.2f, 0.8f, 0.2f, 0.6f);
+
                 var inventory = other.GetComponent<PlayerInventory>();
                 if (inventory == null) return;
 
-                StartCoroutine(DepositAndSellRoutine(
-                    getHandcuffCount: () => inventory.HandcuffVisualCount,
-                    takeHandcuffs: count => TakeHandcuffsFromPlayer(inventory, count)
-                ));
+                if (inventory.HandcuffVisualCount <= 0) return;
+
+                var handcuffs = inventory.TakeAllHandcuffs();
+                StartCoroutine(DepositHandcuffs(handcuffs));
                 return;
             }
 
             // WorkerNPC
             var worker = other.GetComponent<WorkerNPC>();
-            if (worker == null)
-            {
-                Debug.Log($"[SalesZone] WorkerNPC 없음: {other.gameObject.name}");
+            if (worker == null) return;
 
-                return;
-            }
-            Debug.Log($"[SalesZone] WorkerNPC 진입 / 수갑 수: {worker.HandcuffCount}");
+            border.color = new Color(0.2f, 0.8f, 0.2f, 0.6f);
 
-            StartCoroutine(DepositAndSellRoutine(
-                getHandcuffCount: () => worker.HandcuffCount,
-                takeHandcuffs: count => TakeHandcuffsFromWorker(worker, count)
-            ));
+            if (worker.HandcuffCount <= 0) return;
+
+            var workerHandcuffs = worker.TakeAllHandcuffs();
+            StartCoroutine(DepositHandcuffs(workerHandcuffs));
         }
-
-        private IEnumerator DepositAndSellRoutine(
-           System.Func<int> getHandcuffCount,
-           System.Func<int, List<GameObject>> takeHandcuffs)
+        private void OnTriggerExit(Collider other)
         {
-            if (PrisonManager.Instance.IsFull) yield break;
-            if (_isSelling) yield break;
+            if (!other.CompareTag("Player") && other.GetComponent<WorkerNPC>() == null)
+                return;
+            border.color = Color.white;
 
-            int count = getHandcuffCount();
-            if (count <= 0) yield break;
-
-            var handcuffs = takeHandcuffs(count);
-            yield return StartCoroutine(DepositHandcuffs(handcuffs));
-
-            _isSelling = true;
-            _saleCoroutine = StartCoroutine(SellRoutine());
         }
-        // 수갑 오브젝트를 SalesZone 앞에 배치
-        private IEnumerator DepositHandcuffs(List<GameObject> handcuffs)
+        public IEnumerator DepositHandcuffs(List<GameObject> handcuffs)
         {
             for (int i = 0; i < handcuffs.Count; i++)
             {
@@ -98,63 +78,48 @@ namespace PlayableAd.Systems
                 if (go == null) continue;
 
                 var targetPos = CalculateDepositPosition(_depositedHandcuffs.Count);
-
                 go.transform.SetParent(null);
 
                 if (go.TryGetComponent<ItemMover>(out var mover))
-                    mover.MoveTo(targetPos);
+                    mover.MoveTo(targetPos, onComplete: () =>
+                    {
+                        go.transform.rotation = depositRoot.rotation;
+                        CoroutineRunner.Instance.Run(
+                  ScalePopUtility.ScalePop(go));
+                    });
                 else
+                {
                     go.transform.position = targetPos;
+                    go.transform.rotation = depositRoot.rotation;
 
+                    CoroutineRunner.Instance.Run(
+                  ScalePopUtility.ScalePop(go));
+                }
+
+                SoundManager.Instance.PlayHandcuffDeposit();
                 _depositedHandcuffs.Add(go);
 
-                yield return new WaitForSeconds(0.05f); // 살짝 딜레이로 자연스럽게
+                yield return new WaitForSeconds(0.05f);
             }
-
-            yield return new WaitForSeconds(0.3f); // 내려놓기 완료 후 잠시 대기
         }
 
-        // 4개씩 자동 판매
-        private IEnumerator SellRoutine()
+        // -------------------------------------------------------
+        // CriminalNPC가 1개씩 구매 시 호출
+        // -------------------------------------------------------
+
+        /// <summary>수갑 1개 시각 오브젝트 제거</summary>
+        public void RemoveOneDepositedHandcuff()
         {
-            var container = ServiceLocator.Get<IResourceContainer>();
+            if (_depositedHandcuffs.Count == 0) return;
 
-            while (_depositedHandcuffs.Count >= sellAmountPerCustomer)
-            {
-                if (PrisonManager.Instance.IsFull) break;
+            var go = _depositedHandcuffs[^1];
+            _depositedHandcuffs.RemoveAt(_depositedHandcuffs.Count - 1);
 
-                // 수갑 4개 제거
-                RemoveDepositedHandcuffs(sellAmountPerCustomer);
-
-                // 논리 수량 제거 + 수익 발행
-                container.TryRemove(SellResourceType, sellAmountPerCustomer);
-                GameEventBus.Publish_ItemSold(sellAmountPerCustomer);
-
-                TotalCustomerCount++;
-                GameEventBus.Publish_CustomerServed(TotalCustomerCount);
-
-                yield return new WaitForSeconds(saleInterval);
-            }
-
-            // 남은 수갑 정리 (4개 미만)
-            ClearDepositedHandcuffs();
-            _isSelling = false;
-        }
-        private void RemoveDepositedHandcuffs(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                if (_depositedHandcuffs.Count == 0) break;
-
-                var go = _depositedHandcuffs[^1];
-                _depositedHandcuffs.RemoveAt(_depositedHandcuffs.Count - 1);
-
-                if (go != null)
-                    ObjectPool.Instance.Return(go);
-            }
+            if (go != null)
+                ObjectPool.Instance.Return(go);
         }
 
-        private void ClearDepositedHandcuffs()
+        public void ClearDepositedHandcuffs()
         {
             foreach (var go in _depositedHandcuffs)
                 if (go != null) ObjectPool.Instance.Return(go);
@@ -162,58 +127,39 @@ namespace PlayableAd.Systems
             _depositedHandcuffs.Clear();
         }
 
-        private Vector3 CalculateDepositPosition(int index)
-        {
-            int col = index % 2;
-            int row = index / 2;
-            float xOffset = (col == 0 ? -1f : 1f) * (columnSpacing * 0.5f);
-            float zOffset = row * rowSpacing;
-
-            return depositRoot.position
-                 + depositRoot.right * xOffset
-                 + depositRoot.forward * zOffset;
-        }
+        public int DepositedCount => _depositedHandcuffs.Count;
 
         // -------------------------------------------------------
-        // 플레이어 / WorkerNPC에서 수갑 가져오기
-        // -------------------------------------------------------
-
-        private List<GameObject> TakeHandcuffsFromPlayer(
-            PlayerInventory inventory, int count)
-        {
-            var list = inventory.TakeAllHandcuffs();
-
-            // ResourceManager 논리 수량은 유지 (SellRoutine에서 차감)
-            return list;
-        }
-
-        private List<GameObject> TakeHandcuffsFromWorker(
-            WorkerNPC worker, int count)
-        {
-            return worker.TakeAllHandcuffs();
-        }
-
-        // -------------------------------------------------------
-        // ISellable (외부 호출용 — 하위 호환)
+        // ISellable
         // -------------------------------------------------------
 
         public bool CanSell(IResourceContainer container)
         {
             return !PrisonManager.Instance.IsFull
-                && container.GetAmount(SellResourceType) >= sellAmountPerCustomer;
+                && container.GetAmount(SellResourceType) >= SellAmountPerCustomer;
         }
 
- 
-        public void StartSellForWorker(WorkerNPC worker)
+        // -------------------------------------------------------
+        // 위치 계산
+        // -------------------------------------------------------
+
+        private Vector3 CalculateDepositPosition(int index)
         {
-            if (_isSelling) return;
+            int col = index % 1;
+            int row = index / 1;
+            int height = row / 1;
+            int depth = row % 1;
 
-            StartCoroutine(DepositAndSellRoutine(
-                getHandcuffCount: () => worker.HandcuffCount,
-                takeHandcuffs: count => TakeHandcuffsFromWorker(worker, count)
-            ));
+            float xOffset = (col == 0 ? -1f : 1f) * (columnSpacing * 0.5f);
+            float zOffset = depth * rowSpacing;
+            float yOffset = height * stackYSpacing;
+
+            return depositRoot.position
+                 + depositRoot.right * xOffset  // 두 줄 X 간격
+                 + depositRoot.forward * zOffset  // 앞뒤 Z 간격
+                 + Vector3.up * yOffset;  // Y축 높이
         }
-
     }
 
 }
+
