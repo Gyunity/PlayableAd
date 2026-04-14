@@ -18,6 +18,8 @@ namespace PlayableAd.NPC
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
+            Speed = 0f;
+
         }
 
         private void Update()
@@ -40,6 +42,7 @@ namespace PlayableAd.NPC
                 onArrived?.Invoke();
                 return;
             }
+            Speed = 5;
             _onArrived = onArrived;
             _isMoving = true;
             _agent.SetDestination(destination);
@@ -50,6 +53,8 @@ namespace PlayableAd.NPC
             _isMoving = false;
             _onArrived = null;
             _agent.ResetPath();
+
+            Speed = 0f;
         }
 
         public float Speed

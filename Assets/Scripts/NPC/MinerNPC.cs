@@ -25,6 +25,9 @@ namespace PlayableAd.NPC
         [SerializeField]
         private LayerMask oreLayer;
 
+        [Header("광석 스케일 설정")]
+        [SerializeField]
+        private Vector3 depositOreScale = new Vector3(0.5f, 0.5f, 0.5f); // OreDepositZone 내려놓는 크기와 동일하게
 
         public NPCRole Role => NPCRole.Miner;
         public bool IsWorking => CurrentState != NPCState.Idle;
@@ -72,7 +75,7 @@ namespace PlayableAd.NPC
 
         private IEnumerator StartWorkNextFrame()
         {
-            yield return null; 
+            yield return null;
             StartWork();
         }
         // -------------------------------------------------------
@@ -83,9 +86,10 @@ namespace PlayableAd.NPC
         protected override void OnStateEnter(NPCState state)
         {
 
-            switch (state) 
+            switch (state)
             {
                 case NPCState.MovingToTarget:
+                    _navigator.Speed = 5;
                     FindAndMoveToOre();
                     break;
             }
@@ -149,10 +153,11 @@ namespace PlayableAd.NPC
             _reservedOre = bestOre;
             _navigator.MoveTo(
                 _reservedOre.transform.position,
-                onArrived: () => {
-
+                onArrived: () =>
+                {
+                    _navigator.Speed = 0;
                     TransitionTo(NPCState.Working);
-        });
+                });
         }
 
         private void RetryFind() => FindAndMoveToOre();
@@ -185,10 +190,8 @@ namespace PlayableAd.NPC
         {
             if (!ore.IsCollectable) return false;
 
-            // ResourceManager 수량 추가 없이 시각적으로만 처리
             ore.HarvestByNPC();
 
-            // ItemMover로 DepositZone을 향해 날아가게 함
             if (ore.TryGetComponent<ItemMover>(out var mover))
             {
                 mover.MoveTo(
@@ -201,10 +204,11 @@ namespace PlayableAd.NPC
                         // 광석 오브젝트 풀 반환
                         ObjectPool.Instance.Return(ore.gameObject);
                     });
+                ore.transform.localScale = depositOreScale;
             }
             else
             {
-                // ItemMover 없으면 즉시 처리
+                ore.transform.localScale = depositOreScale;
                 _depositZone.AddOreDirectly();
                 ObjectPool.Instance.Return(ore.gameObject);
             }
@@ -213,6 +217,7 @@ namespace PlayableAd.NPC
         }
         private void ReleaseReservation()
         {
+
             OreReservationSystem.Release(_reservedOre);
             _reservedOre = null;
             _miningTimer = 0f;

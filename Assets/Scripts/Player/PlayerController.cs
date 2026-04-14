@@ -1,28 +1,22 @@
 ﻿using PlayableAd.Core;
 using UnityEngine;
-
 namespace PlayableAd.Player
 {
-    /// <summary>
-    /// 플레이어 이동만 담당합니다 (SRP).
-    /// 플레이어블 광고 특성상 터치/마우스 드래그로 조작합니다.
-    /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
         [Header("이동 설정")]
         [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private float rotateSpeed = 720f;  
+        [SerializeField] private float rotateSpeed = 720f;
 
         private CharacterController _cc;
         private Vector3 _moveDir;
         private Camera _cam;
-
-        // 터치 드래그 상태
         private Vector2 _dragStart;
         private bool _isDragging;
-
         private bool _inputBlocked = false;
+
+        public float CurrentSpeed { get; private set; }
 
         private void Awake()
         {
@@ -46,28 +40,28 @@ namespace PlayableAd.Player
         {
             _inputBlocked = true;
             _moveDir = Vector3.zero;
-
             _isDragging = false;
             _dragStart = Vector2.zero;
+            CurrentSpeed = 0f; 
         }
 
         private void UnblockInput()
         {
             _inputBlocked = false;
-
             _moveDir = Vector3.zero;
             _isDragging = false;
             _dragStart = Vector2.zero;
+            CurrentSpeed = 0f;
         }
 
         private void Update()
         {
             if (_inputBlocked)
             {
+                CurrentSpeed = 0f;
                 ApplyGravity();
                 return;
             }
-
             HandleInput();
             Move();
         }
@@ -115,6 +109,7 @@ namespace PlayableAd.Player
         {
             if (_moveDir == Vector3.zero)
             {
+                CurrentSpeed = 0f; 
                 ApplyGravity();
                 return;
             }
@@ -123,16 +118,16 @@ namespace PlayableAd.Player
             motion.y = Physics.gravity.y;
             _cc.Move(motion * Time.deltaTime);
 
+            CurrentSpeed = _moveDir.magnitude;
+
             var targetRot = Quaternion.LookRotation(_moveDir);
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
         }
 
-        // 이동 없을 때도 중력 적용
         private void ApplyGravity()
         {
             _cc.Move(new Vector3(0, Physics.gravity.y, 0) * Time.deltaTime);
         }
-
     }
 }

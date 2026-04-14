@@ -43,6 +43,7 @@ namespace PlayableAd.NPC
         public void StopWork()
         {
             _factory?.StopPickupForWorker();
+            _navigator.Speed = 0;
             _navigator.Stop();
             TransitionTo(NPCState.Idle);
         }
@@ -139,11 +140,18 @@ namespace PlayableAd.NPC
 
             switch (state)
             {
+                case NPCState.Idle:
+                    _navigator.Speed = 0;
+
+                    break;
                 case NPCState.MovingToFactory:
                     MoveToFactory();
+                    _navigator.Speed = 5;
+
                     break;
                 case NPCState.Selling:
                     MoveToSales();
+                    _navigator.Speed = 5;
                     break;
             }
         }
@@ -182,6 +190,7 @@ namespace PlayableAd.NPC
             _navigator.MoveTo(destination, onArrived: () =>
             {
                 Debug.Log("[WorkerNPC] 공장 도착 → 픽업 요청");
+                _navigator.Speed = 0;
                 _factory.StartPickupForWorker(this);
                 StartCoroutine(WaitUntilFull());
             });
@@ -218,6 +227,8 @@ namespace PlayableAd.NPC
             _navigator.MoveTo(destination, onArrived: () =>
             {
                 Debug.Log("[WorkerNPC] 판매존 도착 → 수갑 내려놓기");
+                _navigator.Speed = 0;
+
                 var handcuffs = TakeAllHandcuffs();
                 StartCoroutine(DepositAndWait(handcuffs));
             });

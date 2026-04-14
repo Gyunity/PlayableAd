@@ -20,6 +20,9 @@ namespace PlayableAd.Player
 
         public UpgradeType UpgradeType => UpgradeType.Weapon1;
         public bool IsUpgraded { get; private set; }
+        public int WeaponLevel { get; private set; } = 0; // 0=기본, 1=Weapon1, 2=Weapon2
+
+        public bool IsInOreZone => _inOreZone;
 
         private void Awake()
         {
@@ -88,6 +91,7 @@ namespace PlayableAd.Player
             _currentRange = cfg.weapon1Range;
             ResourceManager.Instance.SetMax(ResourceType.Ore, cfg.weapon1MaxOre);
             IsUpgraded = true;
+            WeaponLevel = 1;
         }
 
         public void ApplyWeapon2Upgrade(MiningConfig cfg)
@@ -96,6 +100,8 @@ namespace PlayableAd.Player
             _currentRange = cfg.weapon2Range;
             ResourceManager.Instance.SetMax(ResourceType.Ore, cfg.weapon2MaxOre);
             IsUpgraded = true;
+            WeaponLevel = 2;
+
         }
 
         public void ApplyRangeUpgrade(float multiplier)

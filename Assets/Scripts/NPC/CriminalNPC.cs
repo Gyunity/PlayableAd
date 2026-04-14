@@ -92,6 +92,8 @@ namespace PlayableAd.NPC
             _criminalState = CriminalState.MovingToSales;
             _navigator.MoveTo(_salesPoint.position, onArrived: () =>
             {
+                _navigator.Speed = 0;
+
                 _criminalState = CriminalState.Buying;
                 ShowRemaining(requiredHandcuffs - _purchasedCount);
                 StartCoroutine(BuyRoutine());
@@ -108,6 +110,7 @@ namespace PlayableAd.NPC
             {
                 if (PrisonManager.Instance.IsFull)
                 {
+                    _navigator.Speed = 1; 
                     StopBuying();
                     yield break;
                 }
