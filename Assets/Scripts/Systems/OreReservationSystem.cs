@@ -19,7 +19,9 @@ namespace PlayableAd.Ststems
         public static bool TryReserve(OreItem ore, object reserver)
         {
             if (ore == null) return false;
-            if(_reservations.ContainsKey(ore)) return false;
+
+            // 이미 다른 NPC가 예약했으면 false 반환
+            if (_reservations.ContainsKey(ore)) return false;
 
             _reservations[ore] = reserver;
             return true;
@@ -30,11 +32,5 @@ namespace PlayableAd.Ststems
             if (ore != null)
                 _reservations.Remove(ore);
         }
-
-        public static void Clear()
-        {
-            _reservations.Clear();
-        }
     }
-
 }

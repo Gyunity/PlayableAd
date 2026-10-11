@@ -12,40 +12,38 @@ namespace PlayableAd.Core
     /// </summary>
     public static class GameEventBus
     {
-        // --- 리소스 ---
         public static event Action<int> OnOreHarvested;
         public static event Action<int> OnHandcuffCrafted;
 
-        // --- 판매 / 재화 ---
-        public static event Action<int> OnItemSold;           // 판매 수량
-        public static event Action<int> OnCurrencyChanged;    // 변동 후 잔액
+        public static event Action<int> OnItemSold;           
+        public static event Action<int> OnCurrencyChanged;    
         public static event Action<int> OnCustomerServed;
-        // --- 업그레이드 / 구매 ---
-        public static event Action<UpgradeType> OnUpgradePurchased;
-        public static event Action<NPCRole, int> OnNPCSpawned; // 역할, 수량
+        public static void Publish_OreHarvested(int amount) => OnOreHarvested?.Invoke(amount);
+        public static void Publish_CurrencyChanged(int balance) => OnCurrencyChanged?.Invoke(balance);
 
-        // --- 스테이지 ---
+        public static event Action<UpgradeType> OnUpgradePurchased;
+        public static event Action<NPCRole, int> OnNPCSpawned;
+
+
         public static event Action<GameStage> OnStageChanged;
         public static event Action OnGameEnd;
 
-        // 수용소
-        public static event Action<int> OnPrisonerAdded;   // 수감자 추가 (현재 인원)
+
+        public static event Action<int> OnPrisonerAdded;   
         public static event Action OnPrisonFull;
         public static event Action OnPrisonExpanded;
 
-        // 컷씬 시작/종료
         public static event Action OnCutsceneStart;
         public static event Action OnCutsceneEnd;
 
         public static event Action<int> OnOreDeposited;
         public static event Action OnHandcuffReceived;
+
+        // Publish 메서드
         public static void Publish_HandcuffReceived() => OnHandcuffReceived?.Invoke();
         public static void Publish_OreDeposited(int count) => OnOreDeposited?.Invoke(count);
-        // --- Publish 메서드 ---
-        public static void Publish_OreHarvested(int amount) => OnOreHarvested?.Invoke(amount);
         public static void Publish_HandcuffCrafted(int amount) => OnHandcuffCrafted?.Invoke(amount);
         public static void Publish_ItemSold(int amount) => OnItemSold?.Invoke(amount);
-        public static void Publish_CurrencyChanged(int balance) => OnCurrencyChanged?.Invoke(balance);
         public static void Publish_UpgradePurchased(UpgradeType t) => OnUpgradePurchased?.Invoke(t);
         public static void Publish_NPCSpawned(NPCRole r, int count) => OnNPCSpawned?.Invoke(r, count);
         public static void Publish_StageChanged(GameStage stage) => OnStageChanged?.Invoke(stage);

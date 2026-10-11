@@ -107,49 +107,32 @@ namespace PlayableAd.NPC
 
         private void FindAndMoveToOre()
         {
-
             var hits = Physics.OverlapSphere(transform.position, searchRange, oreLayer);
-
-
             OreItem bestOre = null;
             float bestDist = float.MaxValue;
 
             foreach (var hit in hits)
             {
-                if (!hit.TryGetComponent<OreItem>(out var ore))
-                {
-                    continue;
-                }
-                if (!ore.IsCollectable)
-                {
-                    continue;
-                }
-                if (OreReservationSystem.IsReserved(ore))
-                {
-                    continue;
-                }
-
+                if (!hit.TryGetComponent<OreItem>(out var ore)) continue;
+                if (!ore.IsCollectable) continue;
+                if (OreReservationSystem.IsReserved(ore)) continue;
+                
                 float dist = Vector3.Distance(transform.position, ore.transform.position);
                 if (dist >= bestDist) continue;
 
                 bestDist = dist;
                 bestOre = ore;
             }
-
             if (bestOre == null)
             {
                 Invoke(nameof(RetryFind), 1f);
                 return;
             }
-
-            // 예약 성공 시 이동
             if (!OreReservationSystem.TryReserve(bestOre, this))
             {
-
                 Invoke(nameof(RetryFind), 0.5f);
                 return;
             }
-
             _reservedOre = bestOre;
             _navigator.MoveTo(
                 _reservedOre.transform.position,
@@ -217,11 +200,9 @@ namespace PlayableAd.NPC
         }
         private void ReleaseReservation()
         {
-
             OreReservationSystem.Release(_reservedOre);
             _reservedOre = null;
             _miningTimer = 0f;
-
         }
 
 #if UNITY_EDITOR

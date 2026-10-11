@@ -61,7 +61,6 @@ namespace PlayableAd.Player
         // -------------------------------------------------------
         // 광석 스택
         // -------------------------------------------------------
-
         private void HandleOreHarvested(int amount)
         {
             for (int i = 0; i < amount; i++)
@@ -72,6 +71,7 @@ namespace PlayableAd.Player
             if (current >= max || amount == 0)
                 oreMaxIndicator?.Show();
         }
+
 
         
         private void SpawnOreVisual()
