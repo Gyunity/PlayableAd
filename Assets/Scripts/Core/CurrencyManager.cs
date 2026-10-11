@@ -1,4 +1,4 @@
-using PlayableAd.Utils;
+﻿using PlayableAd.Utils;
 using UnityEngine;
 
 namespace PlayableAd.Core
@@ -19,7 +19,7 @@ namespace PlayableAd.Core
         {
             if (amount <= 0) return;
             _balance += amount;
-            Debug.Log($"[CurrencyManager] Add({amount}) / �ܾ�: {_balance}\n{System.Environment.StackTrace}");
+            Debug.Log($"[CurrencyManager] Add({amount}) / 잔액: {_balance}\n{System.Environment.StackTrace}");
 
             GameEventBus.Publish_CurrencyChanged(_balance);
         }

@@ -1,20 +1,20 @@
-namespace PlayableAd.Interface
+ï»¿namespace PlayableAd.Interface
 {
     public enum ResourceType
     {
-        Ore, //±¤¹°
-        Handcuff, //¼ö°©
-        Coin, // µ·
-        Weapon // ¹«±â
+        Ore, //ê´‘ë¬¼
+        Handcuff, //ìˆ˜ê°‘
+        Coin, // ëˆ
+        Weapon // ë¬´ê¸°
     }
 
     public enum UpgradeType
     {
-        Weapon1, //¹«±â 1´Ü°è
-        Weapon2, //¹«±â 2´Ü°è
-        Miner, //±¤ºÎ
-        Worker, //µ¿·á
-        PrisonExpand //¼ö¿ë¼Ò Áõ°¡
+        Weapon1, //ë¬´ê¸° 1ë‹¨ê³„
+        Weapon2, //ë¬´ê¸° 2ë‹¨ê³„
+        Miner, //ê´‘ë¶€
+        Worker, //ë™ë£Œ
+        PrisonExpand //ìˆ˜ìš©ì†Œ ì¦ê°€
     }
 
     public enum NPCRole

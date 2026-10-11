@@ -1,4 +1,4 @@
-using PlayableAd.Interface;
+ï»¿using PlayableAd.Interface;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,8 +7,8 @@ using UnityEngine;
 namespace PlayableAd.Core
 {
     ///<summary>
-    ///ÀÌº¥Æ® ¹ö½º(¿ÉÀú¹ö ÆĞÅÏ)
-    ///±¸µ¶Àº OnEnable, ÇØÁ¦´Â OnDisable
+    ///ì´ë²¤íŠ¸ ë²„ìŠ¤(ì˜µì €ë²„ íŒ¨í„´)
+    ///êµ¬ë…ì€ OnEnable, í•´ì œëŠ” OnDisable
     /// </summary>
     public static class GameEventBus
     {
@@ -39,7 +39,7 @@ namespace PlayableAd.Core
         public static event Action<int> OnOreDeposited;
         public static event Action OnHandcuffReceived;
 
-        // Publish ¸Ş¼­µå
+        // Publish ë©”ì„œë“œ
         public static void Publish_HandcuffReceived() => OnHandcuffReceived?.Invoke();
         public static void Publish_OreDeposited(int count) => OnOreDeposited?.Invoke(count);
         public static void Publish_HandcuffCrafted(int amount) => OnHandcuffCrafted?.Invoke(amount);

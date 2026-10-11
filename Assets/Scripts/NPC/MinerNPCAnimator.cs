@@ -1,4 +1,4 @@
-using PlayableAd.Player;
+ï»¿using PlayableAd.Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +10,10 @@ namespace PlayableAd.NPC
 
     public class MinerNPCAnimator : MonoBehaviour
     {
-        [Header("ÂüÁ¶")]
+        [Header("ì°¸ì¡°")]
         [SerializeField] private NPCNavigator nPCNavigator;
 
-        [Header("¼³Á¤")]
+        [Header("ì„¤ì •")]
         [SerializeField] private float speedDampTime = 0.1f;
 
         private Animator _animator;

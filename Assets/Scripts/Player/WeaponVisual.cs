@@ -1,4 +1,4 @@
-// Assets/_Project/Scripts/Player/WeaponVisual.cs
+ï»¿// Assets/_Project/Scripts/Player/WeaponVisual.cs
 using PlayableAd.Core;
 using PlayableAd.Interface;
 using UnityEngine;
@@ -6,22 +6,22 @@ using UnityEngine;
 namespace PlayableAd.Player
 {
     /// <summary>
-    /// OreZone ÁøÀÔ ½Ã ¹«±â ¿ÀºêÁ§Æ®¸¦ È°¼ºÈ­/ºñÈ°¼ºÈ­ÇÕ´Ï´Ù.
-    /// ¹«±â ¾÷±×·¹ÀÌµå ½Ã ÇØ´ç ´Ü°è ¹«±â·Î ±³Ã¼µË´Ï´Ù.
+    /// OreZone ì§„ì… ì‹œ ë¬´ê¸° ì˜¤ë¸Œì íŠ¸ë¥¼ í™œì„±í™”/ë¹„í™œì„±í™”í•©ë‹ˆë‹¤.
+    /// ë¬´ê¸° ì—…ê·¸ë ˆì´ë“œ ì‹œ í•´ë‹¹ ë‹¨ê³„ ë¬´ê¸°ë¡œ êµì²´ë©ë‹ˆë‹¤.
     /// </summary>
     public class WeaponVisual : MonoBehaviour
     {
-        [Header("¹«±â ¿ÀºêÁ§Æ® (´Ü°èº°)")]
-        [SerializeField] private GameObject weaponDefault;  // ±âº» ¹«±â
-        [SerializeField] private GameObject weaponLevel1;   // Weapon1 ¾÷±×·¹ÀÌµå ÈÄ
-        [SerializeField] private GameObject weaponLevel2;   // Weapon2 ¾÷±×·¹ÀÌµå ÈÄ
+        [Header("ë¬´ê¸° ì˜¤ë¸Œì íŠ¸ (ë‹¨ê³„ë³„)")]
+        [SerializeField] private GameObject weaponDefault;  // ê¸°ë³¸ ë¬´ê¸°
+        [SerializeField] private GameObject weaponLevel1;   // Weapon1 ì—…ê·¸ë ˆì´ë“œ í›„
+        [SerializeField] private GameObject weaponLevel2;   // Weapon2 ì—…ê·¸ë ˆì´ë“œ í›„
 
         private GameObject _currentWeapon;
         private int _weaponLevel = 0;
 
         private void Awake()
         {
-            // ½ÃÀÛ ½Ã ¸ğµÎ ºñÈ°¼ºÈ­
+            // ì‹œì‘ ì‹œ ëª¨ë‘ ë¹„í™œì„±í™”
             weaponDefault?.SetActive(false);
             weaponLevel1?.SetActive(false);
             weaponLevel2?.SetActive(false);
@@ -40,7 +40,7 @@ namespace PlayableAd.Player
         }
 
         // -------------------------------------------------------
-        // OreZone¿¡¼­ È£Ãâ
+        // OreZoneì—ì„œ í˜¸ì¶œ
         // -------------------------------------------------------
 
         public void ShowWeapon()
@@ -54,7 +54,7 @@ namespace PlayableAd.Player
         }
 
         // -------------------------------------------------------
-        // ¾÷±×·¹ÀÌµå ½Ã ¹«±â ±³Ã¼
+        // ì—…ê·¸ë ˆì´ë“œ ì‹œ ë¬´ê¸° êµì²´
         // -------------------------------------------------------
 
         private void HandleUpgrade(UpgradeType type)
@@ -74,14 +74,14 @@ namespace PlayableAd.Player
         {
             bool wasShowing = _currentWeapon != null && _currentWeapon.activeSelf;
 
-            // ÇöÀç ¹«±â ¼û±â±â
+            // í˜„ì¬ ë¬´ê¸° ìˆ¨ê¸°ê¸°
             _currentWeapon?.SetActive(false);
 
-            // »õ ¹«±â·Î ±³Ã¼
+            // ìƒˆ ë¬´ê¸°ë¡œ êµì²´
             _currentWeapon = newWeapon;
             _weaponLevel = level;
 
-            // ÀÌÀü¿¡ º¸ÀÌ°í ÀÖ¾úÀ¸¸é »õ ¹«±âµµ ¹Ù·Î Ç¥½Ã
+            // ì´ì „ì— ë³´ì´ê³  ìˆì—ˆìœ¼ë©´ ìƒˆ ë¬´ê¸°ë„ ë°”ë¡œ í‘œì‹œ
             if (wasShowing)
                 _currentWeapon?.SetActive(true);
         }

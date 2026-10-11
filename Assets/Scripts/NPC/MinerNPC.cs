@@ -1,4 +1,4 @@
-using PlayableAd.Interface;
+ï»¿using PlayableAd.Interface;
 using PlayableAd.Items;
 using PlayableAd.Ststems;
 using PlayableAd.Systems;
@@ -10,14 +10,14 @@ using UnityEngine;
 namespace PlayableAd.NPC
 {
     /// <summary>
-    /// ÀÚµ¿ Ã¤±¼ NPC.
-    /// ±ÙÃ³ ±¤¼® Å½»ö(¿¹¾à) ¡æ ÀÌµ¿ ¡æ Ã¤±¼ ¡æ OreDepositZone ÀÌµ¿ ¡æ ¹İº¹
+    /// ìë™ ì±„êµ´ NPC.
+    /// ê·¼ì²˜ ê´‘ì„ íƒìƒ‰(ì˜ˆì•½) â†’ ì´ë™ â†’ ì±„êµ´ â†’ OreDepositZone ì´ë™ â†’ ë°˜ë³µ
     /// </summary>
     [RequireComponent(typeof(NPCNavigator))]
 
     public class MinerNPC : NPCStateMachine, IWorker
     {
-        [Header("Ã¤±¼ ¼³Á¤")]
+        [Header("ì±„êµ´ ì„¤ì •")]
         [SerializeField]
         private float miningInterval = 0.5f;
         [SerializeField]
@@ -25,9 +25,9 @@ namespace PlayableAd.NPC
         [SerializeField]
         private LayerMask oreLayer;
 
-        [Header("±¤¼® ½ºÄÉÀÏ ¼³Á¤")]
+        [Header("ê´‘ì„ ìŠ¤ì¼€ì¼ ì„¤ì •")]
         [SerializeField]
-        private Vector3 depositOreScale = new Vector3(0.5f, 0.5f, 0.5f); // OreDepositZone ³»·Á³õ´Â Å©±â¿Í µ¿ÀÏÇÏ°Ô
+        private Vector3 depositOreScale = new Vector3(0.5f, 0.5f, 0.5f); // OreDepositZone ë‚´ë ¤ë†“ëŠ” í¬ê¸°ì™€ ë™ì¼í•˜ê²Œ
 
         public NPCRole Role => NPCRole.Miner;
         public bool IsWorking => CurrentState != NPCState.Idle;
@@ -57,7 +57,7 @@ namespace PlayableAd.NPC
             _navigator.Stop();
             TransitionTo(NPCState.Idle);
         }
-        /// <summary>ShopZone¿¡¼­ ½ºÆù ½Ã È£Ãâ</summary>
+        /// <summary>ShopZoneì—ì„œ ìŠ¤í° ì‹œ í˜¸ì¶œ</summary>
         public void Init(OreDepositZone depositZone)
         {
             if (depositZone == null)
@@ -79,7 +79,7 @@ namespace PlayableAd.NPC
             StartWork();
         }
         // -------------------------------------------------------
-        // »óÅÂ ¸Ó½Å
+        // ìƒíƒœ ë¨¸ì‹ 
         // -------------------------------------------------------
 
 
@@ -102,7 +102,7 @@ namespace PlayableAd.NPC
         }
 
         // -------------------------------------------------------
-        // ±¤¼® Å½»ö & ¿¹¾à
+        // ê´‘ì„ íƒìƒ‰ & ì˜ˆì•½
         // -------------------------------------------------------
 
         private void FindAndMoveToOre()
@@ -146,12 +146,12 @@ namespace PlayableAd.NPC
         private void RetryFind() => FindAndMoveToOre();
 
         // -------------------------------------------------------
-        // Ã¤±¼
+        // ì±„êµ´
         // -------------------------------------------------------
 
         private void UpdateMining()
         {
-            // ±¤¼®ÀÌ »ç¶óÁø °æ¿ì ÀçÅ½»ö
+            // ê´‘ì„ì´ ì‚¬ë¼ì§„ ê²½ìš° ì¬íƒìƒ‰
             if (_reservedOre == null || !_reservedOre.IsCollectable)
             {
                 ReleaseReservation();
@@ -181,10 +181,10 @@ namespace PlayableAd.NPC
                     _depositZone.transform.position,
                     onComplete: () =>
                     {
-                        // µµÂø ½Ã DepositZone¿¡ ±¤¼® Ãß°¡
+                        // ë„ì°© ì‹œ DepositZoneì— ê´‘ì„ ì¶”ê°€
                         _depositZone.AddOreDirectly();
 
-                        // ±¤¼® ¿ÀºêÁ§Æ® Ç® ¹İÈ¯
+                        // ê´‘ì„ ì˜¤ë¸Œì íŠ¸ í’€ ë°˜í™˜
                         ObjectPool.Instance.Return(ore.gameObject);
                     });
                 ore.transform.localScale = depositOreScale;

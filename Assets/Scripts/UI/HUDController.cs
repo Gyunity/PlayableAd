@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
 using PlayableAd.Core;
 
@@ -6,9 +6,9 @@ namespace PlayableAd.UI
 {
     public class HUDController : MonoBehaviour
     {
-        [Header("ÅØ½ºÆ® UI")]
-        [SerializeField] private TextMeshProUGUI currencyText;    // µ·
-        [SerializeField] private TextMeshPro prisonerText;    // ÆÇ¸Å °í°´ ¼ö
+        [Header("í…ìŠ¤íŠ¸ UI")]
+        [SerializeField] private TextMeshProUGUI currencyText;    // ëˆ
+        [SerializeField] private TextMeshPro prisonerText;    // íŒë§¤ ê³ ê° ìˆ˜
 
         private void OnEnable()
         {
@@ -24,7 +24,7 @@ namespace PlayableAd.UI
 
         private void Start()
         {
-            // ÃÊ±â°ª ¼¼ÆÃ
+            // ì´ˆê¸°ê°’ ì„¸íŒ…
             UpdateCurrencyText(CurrencyManager.Instance.Balance);
             UpdatePrisonerText(
               PrisonManager.Instance.CurrentCount,

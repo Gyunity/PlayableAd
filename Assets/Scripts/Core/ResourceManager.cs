@@ -1,4 +1,4 @@
-using PlayableAd.Interface;
+ï»¿using PlayableAd.Interface;
 using PlayableAd.Utils;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ namespace PlayableAd.Core
 {
     public class ResourceManager : Singleton<ResourceManager>, IResourceContainer
     {
-        //¸®¼Ò½º ÇöÀç·®
+        //ë¦¬ì†ŒìŠ¤ í˜„ìž¬ëŸ‰
         private readonly Dictionary<ResourceType, int> _amounts = new()
         {
             { ResourceType.Ore, 0 },
@@ -16,7 +16,7 @@ namespace PlayableAd.Core
             { ResourceType.Coin, 0 },
         };
 
-        //¸®¼Ò½º ÃÖ´ë·®
+        //ë¦¬ì†ŒìŠ¤ ìµœëŒ€ëŸ‰
         private readonly Dictionary<ResourceType, int> _maxAmounts = new()
         {
             { ResourceType.Ore, 10 },

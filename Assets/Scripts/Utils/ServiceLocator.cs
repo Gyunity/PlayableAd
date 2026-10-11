@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlayableAd.Utils
 {
-    // ¼­ºñ½º ·ÎÄÉÀÌÅÍ ÆĞÅÏ
-    // ManagerµéÀ» ÀÎÅÍÆäÀÌ½º·Î µî·Ï/Á¶È¸ÇØ¼­ Á÷Á¢ ÂüÁ¶ ÀÇÁ¸¼ºÀ» Á¦°Å
+    // ì„œë¹„ìŠ¤ ë¡œì¼€ì´í„° íŒ¨í„´
+    // Managerë“¤ì„ ì¸í„°í˜ì´ìŠ¤ë¡œ ë“±ë¡/ì¡°íšŒí•´ì„œ ì§ì ‘ ì°¸ì¡° ì˜ì¡´ì„±ì„ ì œê±°
     public static class ServiceLocator
     {
         private static readonly Dictionary<Type, object> _services = new();
@@ -15,7 +15,7 @@ namespace PlayableAd.Utils
             var type = typeof(T);
             if (_services.ContainsKey(type))
             {
-                Debug.LogWarning($"[ServiceLocator] {type.Name} ÀÌ¹Ì µî·ÏµÊ. µ¤¾î¾¹´Ï´Ù.");
+                Debug.LogWarning($"[ServiceLocator] {type.Name} ì´ë¯¸ ë“±ë¡ë¨. ë®ì–´ì”ë‹ˆë‹¤.");
             }
             _services[type] = service;
         }
@@ -26,7 +26,7 @@ namespace PlayableAd.Utils
             if (_services.TryGetValue(type, out var service))
                 return (T)service;
 
-            Debug.LogError($"[ServiceLocator] {type.Name} µî·ÏµÇÁö ¾ÊÀ½.");
+            Debug.LogError($"[ServiceLocator] {type.Name} ë“±ë¡ë˜ì§€ ì•ŠìŒ.");
             return default;
         }
 
@@ -46,7 +46,7 @@ namespace PlayableAd.Utils
             _services.Remove(typeof(T));
         }
 
-        /// <summary>¾À ÀüÈ¯ ½Ã È£ÃâÇØ¼­ ¾À Á¾¼Ó ¼­ºñ½º¸¸ ÃÊ±âÈ­ÇÕ´Ï´Ù.</summary>
+        /// <summary>ì”¬ ì „í™˜ ì‹œ í˜¸ì¶œí•´ì„œ ì”¬ ì¢…ì† ì„œë¹„ìŠ¤ë§Œ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.</summary>
         public static void Clear()
         {
             _services.Clear();

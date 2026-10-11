@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,7 +38,7 @@ namespace PlayableAd.NPC
         {
             if (!_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
             {
-                Debug.LogWarning($"[NPCNavigator] {name} NavMesh À§¿¡ ¾øÀ½");
+                Debug.LogWarning($"[NPCNavigator] {name} NavMesh ìœ„ì— ì—†ìŒ");
                 onArrived?.Invoke();
                 return;
             }

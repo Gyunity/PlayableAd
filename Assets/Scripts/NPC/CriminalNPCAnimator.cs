@@ -1,4 +1,4 @@
-using PlayableAd.NPC;
+ï»¿using PlayableAd.NPC;
 using PlayableAd.Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,9 +11,9 @@ namespace PlayableAd.NPC
 
     public class CriminalNPCAnimator : MonoBehaviour
     {
-        [Header("ÂüÁ¶")]
+        [Header("ì°¸ì¡°")]
         [SerializeField] private NPCNavigator nPCNavigator;
-        [Header("¼³Á¤")]
+        [Header("ì„¤ì •")]
         [SerializeField] private float speedDampTime = 0.1f;
 
         private Animator _animator;

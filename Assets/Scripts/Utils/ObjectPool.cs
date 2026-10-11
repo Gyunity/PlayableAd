@@ -1,4 +1,4 @@
-
+ï»¿
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -8,7 +8,7 @@ namespace PlayableAd.Utils
 {
 
     /// <summary>
-    /// ¿ÀºêÁ§Æ® Ç® °ü¸® ¸Å´ÏÀú
+    /// ì˜¤ë¸Œì íŠ¸ í’€ ê´€ë¦¬ ë§¤ë‹ˆì €
     /// </summary>
     public class ObjectPool : Singleton<ObjectPool>
     {
@@ -61,7 +61,7 @@ namespace PlayableAd.Utils
         {
             if (!_pools.TryGetValue(key, out var pool))
             {
-                Debug.LogError($"[ObjectPool] '{key}' Ç®ÀÌ ¾ø½À´Ï´Ù.");
+                Debug.LogError($"[ObjectPool] '{key}' í’€ì´ ì—†ìŠµë‹ˆë‹¤.");
                 return null;
             }
 
@@ -74,7 +74,7 @@ namespace PlayableAd.Utils
         {
             if (!_instanceKeyMap.TryGetValue(go, out var key))
             {
-                Debug.LogWarning("[ObjectPool] Ç®¿¡¼­ »ı¼ºµÇÁö ¾ÊÀº ¿ÀºêÁ§Æ®ÀÔ´Ï´Ù. Destroy Ã³¸®ÇÕ´Ï´Ù.");
+                Debug.LogWarning("[ObjectPool] í’€ì—ì„œ ìƒì„±ë˜ì§€ ì•Šì€ ì˜¤ë¸Œì íŠ¸ì…ë‹ˆë‹¤. Destroy ì²˜ë¦¬í•©ë‹ˆë‹¤.");
                 Destroy(go);
                 return;
             }

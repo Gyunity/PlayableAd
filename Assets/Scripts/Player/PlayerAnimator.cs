@@ -1,4 +1,4 @@
-
+ï»¿
 using UnityEngine;
 
 namespace PlayableAd.Player
@@ -6,11 +6,11 @@ namespace PlayableAd.Player
     [RequireComponent(typeof(Animator))]
     public class PlayerAnimator : MonoBehaviour
     {
-        [Header("ÂüÁ¶")]
+        [Header("ì°¸ì¡°")]
         [SerializeField] private PlayerController playerController;
         [SerializeField] private PlayerMiner playerMiner;
 
-        [Header("¼³Á¤")]
+        [Header("ì„¤ì •")]
         [SerializeField] private float speedDampTime = 0.1f;
 
         private Animator _animator;

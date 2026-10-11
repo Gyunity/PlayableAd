@@ -1,10 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
 namespace PlayableAd.Utils
 {
     /// <summary>
-    /// MonoBehaviour ¾ø´Â °÷¿¡¼­ ÄÚ·çÆ¾À» ½ÇÇàÇÒ ¼ö ÀÖ°Ô ÇØÁÖ´Â À¯Æ¿.
+    /// MonoBehaviour ì—†ëŠ” ê³³ì—ì„œ ì½”ë£¨í‹´ì„ ì‹¤í–‰í•  ìˆ˜ ìˆê²Œ í•´ì£¼ëŠ” ìœ í‹¸.
     /// </summary>
     public class CoroutineRunner : Singleton<CoroutineRunner>
     {

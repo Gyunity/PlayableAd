@@ -1,12 +1,12 @@
-using PlayableAd.Utils;
+ï»¿using PlayableAd.Utils;
 using UnityEngine;
 
 namespace PlayableAd.Items
 {
     /// <summary>
-    /// ½Ã°¢Àû ÄÚÀÎ ¿ÀºêÁ§Æ®.
-    /// ½ÇÁ¦ ÀçÈ­ °è»êÀº CurrencyManager°¡ ´ã´çÇÏ°í
-    /// ÀÌ Å¬·¡½º´Â ¼ø¼öÇÏ°Ô ½Ã°¢ Ç¥Çö¸¸ ´ã´çÇÕ´Ï´Ù.
+    /// ì‹œê°ì  ì½”ì¸ ì˜¤ë¸Œì íŠ¸.
+    /// ì‹¤ì œ ì¬í™” ê³„ì‚°ì€ CurrencyManagerê°€ ë‹´ë‹¹í•˜ê³ 
+    /// ì´ í´ë˜ìŠ¤ëŠ” ìˆœìˆ˜í•˜ê²Œ ì‹œê° í‘œí˜„ë§Œ ë‹´ë‹¹í•©ë‹ˆë‹¤.
     /// </summary>
     public class CoinItem : MonoBehaviour
     {

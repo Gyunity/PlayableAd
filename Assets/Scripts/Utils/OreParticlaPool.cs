@@ -1,10 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using PlayableAd.Utils;
 
 namespace PlayableAd.Systems
 {
     /// <summary>
-    /// ±¤¹° Ã¤±¼ ÆÄÆ¼Å¬À» ¿ÀºêÁ§Æ® Ç®·Î °ü¸®ÇÕ´Ï´Ù.
+    /// ê´‘ë¬¼ ì±„êµ´ íŒŒí‹°í´ì„ ì˜¤ë¸Œì íŠ¸ í’€ë¡œ ê´€ë¦¬í•©ë‹ˆë‹¤.
     /// </summary>
     public class OreParticlePool : Singleton<OreParticlePool>
     {
@@ -35,7 +35,7 @@ namespace PlayableAd.Systems
             ps.Stop();
             ps.Play();
 
-            // Àç»ı ¿Ï·á ÈÄ ºñÈ°¼ºÈ­
+            // ì¬ìƒ ì™„ë£Œ í›„ ë¹„í™œì„±í™”
             StartCoroutine(DeactivateAfter(ps, ps.main.duration + ps.main.startLifetime.constantMax));
         }
 

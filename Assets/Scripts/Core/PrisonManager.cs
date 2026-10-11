@@ -1,12 +1,12 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using PlayableAd.Utils;
 using PlayableAd.Interface;
 
 namespace PlayableAd.Core
 {
     /// <summary>
-    /// ¼ö¿ë¼Ò ÀÎ¿øÀ» °ü¸®ÇÕ´Ï´Ù.
-    /// ÆÇ¸Å ¿Ï·á ½Ã ¼ö°¨ÀÚ +1, Max µµ´Ş ½Ã ÆÇ¸Å Àá±İ.
+    /// ìˆ˜ìš©ì†Œ ì¸ì›ì„ ê´€ë¦¬í•©ë‹ˆë‹¤.
+    /// íŒë§¤ ì™„ë£Œ ì‹œ ìˆ˜ê°ì +1, Max ë„ë‹¬ ì‹œ íŒë§¤ ì ê¸ˆ.
     /// </summary>
 
     public class PrisonManager : Singleton<PrisonManager>
@@ -41,23 +41,23 @@ namespace PlayableAd.Core
 
             if (IsFull)
             {
-                Debug.Log("¼ö¿ë¼Ò ²ËÂü");
+                Debug.Log("ìˆ˜ìš©ì†Œ ê½‰ì°¸");
                 GameManager.Instance.AdvanceTo(GameStage.Stage8_PrisonExpand);
                 GameEventBus.Publish_PrisonFull();
             }
         }
-        /// <summary>CriminalNPC°¡ ¼ö¿ë¼Ò ÀÔÀå ½Ã Á÷Á¢ È£Ãâ</summary>
+        /// <summary>CriminalNPCê°€ ìˆ˜ìš©ì†Œ ì…ì¥ ì‹œ ì§ì ‘ í˜¸ì¶œ</summary>
         public void AddPrisoner()
         {
             if (IsFull) return;
 
             CurrentCount++;
             GameEventBus.Publish_PrisonerAdded(CurrentCount);
-            Debug.Log($"[PrisonManager] ¼ö°¨ÀÚ Ãß°¡: {CurrentCount}/{maxCapacity}");
+            Debug.Log($"[PrisonManager] ìˆ˜ê°ì ì¶”ê°€: {CurrentCount}/{maxCapacity}");
 
             if (IsFull)
             {
-                Debug.Log("[PrisonManager] ¼ö¿ë¼Ò ¸¸¼®!");
+                Debug.Log("[PrisonManager] ìˆ˜ìš©ì†Œ ë§Œì„!");
                 GameEventBus.Publish_StageChanged(GameStage.Stage8_PrisonExpand);
                 GameEventBus.Publish_PrisonFull();
             }

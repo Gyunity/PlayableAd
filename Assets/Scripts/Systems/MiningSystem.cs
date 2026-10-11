@@ -1,19 +1,19 @@
-using PlayableAd.Core;
+ï»¿using PlayableAd.Core;
 using PlayableAd.Interface;
 using UnityEngine;
 
 namespace PlayableAd.Systems
 {
     /// <summary>
-    /// NPC ±¤ºÎ(MinerNPC)¿¡ ºÙ´Â Ã¤±¼ ÄÄÆ÷³ÍÆ®.
-    /// PlayerMiner¿Í µ¿ÀÏÇÏ°Ô Physics.OverlapSphere·Î ÁÖº¯ ±¤¹°À» Á÷Á¢ Å½»öÇÕ´Ï´Ù.
+    /// NPC ê´‘ë¶€(MinerNPC)ì— ë¶™ëŠ” ì±„êµ´ ì»´í¬ë„ŒíŠ¸.
+    /// PlayerMinerì™€ ë™ì¼í•˜ê²Œ Physics.OverlapSphereë¡œ ì£¼ë³€ ê´‘ë¬¼ì„ ì§ì ‘ íƒìƒ‰í•©ë‹ˆë‹¤.
     /// </summary>
     public class MiningSystem : MonoBehaviour, IUpgradeable
     {
-        [Header("Ã¤±¼ ¼³Á¤")]
+        [Header("ì±„êµ´ ì„¤ì •")]
         [SerializeField] private float miningInterval = 0.5f;
         [SerializeField] private float miningRange = 1.5f;
-        [SerializeField] private LayerMask oreLayer;  // ÀÎ½ºÆåÅÍ¿¡¼­ "Ore" ·¹ÀÌ¾î ¼±ÅÃ
+        [SerializeField] private LayerMask oreLayer;  // ì¸ìŠ¤í™í„°ì—ì„œ "Ore" ë ˆì´ì–´ ì„ íƒ
 
         private float _timer;
         private bool _isActive;
@@ -48,12 +48,12 @@ namespace PlayableAd.Systems
 
         private void TryMine()
         {
-            // ResourceManager Max Ã¼Å©
+            // ResourceManager Max ì²´í¬
             var current = ResourceManager.Instance.GetAmount(ResourceType.Ore);
             var max = ResourceManager.Instance.GetMax(ResourceType.Ore);
             if (current >= max) return;
 
-            // ¾Õ ¹æÇâ ±âÁØÀ¸·Î OverlapSphere Å½»ö
+            // ì• ë°©í–¥ ê¸°ì¤€ìœ¼ë¡œ OverlapSphere íƒìƒ‰
             var checkPos = transform.position + transform.forward * (miningRange * 0.5f);
             var hits = Physics.OverlapSphere(checkPos, miningRange, oreLayer);
 

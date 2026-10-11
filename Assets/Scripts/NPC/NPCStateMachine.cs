@@ -1,4 +1,4 @@
-
+ï»¿
 using UnityEngine;
 
 namespace PlayableAd.NPC
@@ -6,10 +6,10 @@ namespace PlayableAd.NPC
     public enum NPCState
     {
         Idle,
-        MovingToTarget,   // ¸ñÇ¥ ÀÌµ¿ Áß
-        Working,          // Ã¤±¼ Áß (MinerNPC)
-        MovingToFactory,  // °øÀå ÀÌµ¿ Áß (WorkerNPC)
-        Selling           // ÆÇ¸ÅÁ¸ ÀÌµ¿/ÆÇ¸Å Áß (WorkerNPC)
+        MovingToTarget,   // ëª©í‘œ ì´ë™ ì¤‘
+        Working,          // ì±„êµ´ ì¤‘ (MinerNPC)
+        MovingToFactory,  // ê³µì¥ ì´ë™ ì¤‘ (WorkerNPC)
+        Selling           // íŒë§¤ì¡´ ì´ë™/íŒë§¤ ì¤‘ (WorkerNPC)
     }
 
     public abstract class NPCStateMachine : MonoBehaviour

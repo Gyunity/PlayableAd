@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
 namespace PlayableAd.Utils
@@ -6,8 +6,8 @@ namespace PlayableAd.Utils
     public static class ScalePopUtility
     {
         /// <summary>
-        /// MonoBehaviour¿¡¼­ ÄÚ·çÆ¾À¸·Î ½ÇÇà.
-        /// 1.5 ¡æ 1.0 ½ºÄÉÀÏ ÆË ¾Ö´Ï¸ŞÀÌ¼Ç.
+        /// MonoBehaviourì—ì„œ ì½”ë£¨í‹´ìœ¼ë¡œ ì‹¤í–‰.
+        /// 1.5 â†’ 1.0 ìŠ¤ì¼€ì¼ íŒ ì• ë‹ˆë©”ì´ì…˜.
         /// </summary>
         public static IEnumerator ScalePop(
             GameObject go,

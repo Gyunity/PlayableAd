@@ -1,4 +1,4 @@
-using PlayableAd.Interface;
+ï»¿using PlayableAd.Interface;
 using PlayableAd.Utils;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -7,8 +7,8 @@ namespace PlayableAd.Core
 {
 
     /// <summary>
-    /// °ÔÀÓ ´Ü°è º° Á¶°ÇÀ» °ü¸®
-    /// ¿¬ÃâÀº StageController¿¡ À§ÀÓ
+    /// ê²Œì„ ë‹¨ê³„ ë³„ ì¡°ê±´ì„ ê´€ë¦¬
+    /// ì—°ì¶œì€ StageControllerì— ìœ„ì„
     /// </summary>
 
     public class GameManager : Singleton<GameManager>
@@ -32,7 +32,7 @@ namespace PlayableAd.Core
             GameEventBus.OnUpgradePurchased -= HandleUpgrade;
         }
 
-        //´ÙÀ½ ½ÃÅ×ÀÌÁö Á¶°Ç Ã¼Å©
+        //ë‹¤ìŒ ì‹œí…Œì´ì§€ ì¡°ê±´ ì²´í¬
         private void HandleCurrencyChanged(int balance)
         {
             if (CurrentStage == GameStage.Stage3_Sales && balance >= 100)
@@ -57,7 +57,7 @@ namespace PlayableAd.Core
         {
             if (stage <= CurrentStage) return;
             CurrentStage = stage;
-            Debug.Log($"[GameManager] ½ºÅ×ÀÌÁö ÀüÈ¯ ¡æ {stage}");
+            Debug.Log($"[GameManager] ìŠ¤í…Œì´ì§€ ì „í™˜ â†’ {stage}");
             GameEventBus.Publish_StageChanged(stage);
 
             if(stage == GameStage.Stage9_End)

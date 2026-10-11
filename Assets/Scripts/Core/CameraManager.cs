@@ -1,4 +1,4 @@
-using PlayableAd.Utils;
+ï»¿using PlayableAd.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +6,7 @@ using UnityEngine;
 namespace PlayableAd.Core
 {
     /// <summary>
-    /// Ä«¸Ş¶ó ¹«ºù ¹× ¿¬Ãâ¿ë
+    /// ì¹´ë©”ë¼ ë¬´ë¹™ ë° ì—°ì¶œìš©
     /// </summary>
 
     public class CameraManager : Singleton<CameraManager>

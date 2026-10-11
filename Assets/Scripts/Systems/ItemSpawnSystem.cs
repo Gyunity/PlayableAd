@@ -1,34 +1,34 @@
-using PlayableAd.Core;
+ï»¿using PlayableAd.Core;
 using PlayableAd.Interface;
 using UnityEngine;
 
 namespace PlayableAd.Systems
 {
     /// <summary>
-    /// ½ºÅ×ÀÌÁö ÀüÈ¯ ½Ã ÇØ´ç ´Ü°è¿¡ ÇÊ¿äÇÑ Á¸À» È°¼ºÈ­ÇÕ´Ï´Ù.
-    /// ¸ğµç Á¸Àº ½ÃÀÛ ½Ã ºñÈ°¼º »óÅÂÀÔ´Ï´Ù.
+    /// ìŠ¤í…Œì´ì§€ ì „í™˜ ì‹œ í•´ë‹¹ ë‹¨ê³„ì— í•„ìš”í•œ ì¡´ì„ í™œì„±í™”í•©ë‹ˆë‹¤.
+    /// ëª¨ë“  ì¡´ì€ ì‹œì‘ ì‹œ ë¹„í™œì„± ìƒíƒœì…ë‹ˆë‹¤.
     /// </summary>
     public class ItemSpawnSystem : MonoBehaviour
     {
-        [Header("´Ü°èº° Á¸")]
-        [SerializeField] private GameObject oreDepositZone;    // Ç×»ó È°¼º
-        [SerializeField] private GameObject handcuffFactory;   // Ç×»ó È°¼º
-        [SerializeField] private GameObject salesZone;         // Stage3 È°¼ºÈ­
-        [SerializeField] private GameObject weaponShopZone;    // Stage4 È°¼ºÈ­
-        [SerializeField] private GameObject minerShopZone;     // Stage5 È°¼ºÈ­
-        [SerializeField] private GameObject workerShopZone;    // Stage6 È°¼ºÈ­
-        [SerializeField] private GameObject weaponShop2Zone;   // Stage7 È°¼ºÈ­
-        [SerializeField] private GameObject prisonExpandZone;  // Stage8 È°¼ºÈ­
-        [SerializeField] private GameObject endPanel; //Á¾·á ÆĞ³Î
-        [Header("È®Àåº®")]
+        [Header("ë‹¨ê³„ë³„ ì¡´")]
+        [SerializeField] private GameObject oreDepositZone;    // í•­ìƒ í™œì„±
+        [SerializeField] private GameObject handcuffFactory;   // í•­ìƒ í™œì„±
+        [SerializeField] private GameObject salesZone;         // Stage3 í™œì„±í™”
+        [SerializeField] private GameObject weaponShopZone;    // Stage4 í™œì„±í™”
+        [SerializeField] private GameObject minerShopZone;     // Stage5 í™œì„±í™”
+        [SerializeField] private GameObject workerShopZone;    // Stage6 í™œì„±í™”
+        [SerializeField] private GameObject weaponShop2Zone;   // Stage7 í™œì„±í™”
+        [SerializeField] private GameObject prisonExpandZone;  // Stage8 í™œì„±í™”
+        [SerializeField] private GameObject endPanel; //ì¢…ë£Œ íŒ¨ë„
+        [Header("í™•ì¥ë²½")]
         [SerializeField] private GameObject[] expandWall;
         [SerializeField] private GameObject exitWall;
-        [Header("´ÙÀ½ ´Ü°è ¾È³» È­»ìÇ¥")]
+        [Header("ë‹¤ìŒ ë‹¨ê³„ ì•ˆë‚´ í™”ì‚´í‘œ")]
         [SerializeField] private GameObject arrowIndicator;
 
         private void Start()
         {
-            // ÃÊ±â »óÅÂ: Ã¤±¼/°øÀå¸¸ È°¼º, ³ª¸ÓÁö ºñÈ°¼º
+            // ì´ˆê¸° ìƒíƒœ: ì±„êµ´/ê³µì¥ë§Œ í™œì„±, ë‚˜ë¨¸ì§€ ë¹„í™œì„±
             oreDepositZone?.SetActive(true);
             handcuffFactory?.SetActive(true);
             salesZone?.SetActive(true);
@@ -42,7 +42,7 @@ namespace PlayableAd.Systems
                 expandWall[i].SetActive(false);
 
 
-            // È­»ìÇ¥´Â °øÀå ¹æÇâ Ç¥½Ã
+            // í™”ì‚´í‘œëŠ” ê³µì¥ ë°©í–¥ í‘œì‹œ
             MoveArrow(handcuffFactory);
         }
 

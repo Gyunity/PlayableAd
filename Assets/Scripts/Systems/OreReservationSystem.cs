@@ -1,4 +1,4 @@
-using PlayableAd.Items;
+ï»¿using PlayableAd.Items;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +6,8 @@ using UnityEngine;
 namespace PlayableAd.Ststems
 {
     /// <summary>
-    /// MinerNPC °£ µ¿ÀÏ ±¤¼® Áßº¹ Ã¤±¼ ¹æÁö.
-    /// ±¤¼® Ã¤±¼ Àü Reserve() È£Ãâ, ¿Ï·á ÈÄ Release() È£Ãâ.
+    /// MinerNPC ê°„ ë™ì¼ ê´‘ì„ ì¤‘ë³µ ì±„êµ´ ë°©ì§€.
+    /// ê´‘ì„ ì±„êµ´ ì „ Reserve() í˜¸ì¶œ, ì™„ë£Œ í›„ Release() í˜¸ì¶œ.
     /// </summary>
     public static class OreReservationSystem
     {
@@ -20,7 +20,7 @@ namespace PlayableAd.Ststems
         {
             if (ore == null) return false;
 
-            // ÀÌ¹Ì ´Ù¸¥ NPC°¡ ¿¹¾àÇßÀ¸¸é false ¹İÈ¯
+            // ì´ë¯¸ ë‹¤ë¥¸ NPCê°€ ì˜ˆì•½í–ˆìœ¼ë©´ false ë°˜í™˜
             if (_reservations.ContainsKey(ore)) return false;
 
             _reservations[ore] = reserver;

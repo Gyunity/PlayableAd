@@ -1,17 +1,17 @@
-using PlayableAd.Core;
+ï»¿using PlayableAd.Core;
 using PlayableAd.Interface;
 using UnityEngine;
 
 namespace PlayableAd.Systems
 {
     /// <summary>
-    /// ÆÇ¸Å ÀÌº¥Æ®¸¦ ¼ö½ÅÇØ¼­ ÀüÃ¼ ÆÇ¸Å »óÅÂ¸¦ °ü¸®ÇÕ´Ï´Ù.
-    /// °í°´ ¼ö ´©Àû Ä«¿îÆÃ ¹× ½ºÅ×ÀÌÁö ÀüÈ¯ Á¶°ÇÀ» Ã¼Å©ÇÕ´Ï´Ù.
+    /// íŒë§¤ ì´ë²¤íŠ¸ë¥¼ ìˆ˜ì‹ í•´ì„œ ì „ì²´ íŒë§¤ ìƒíƒœë¥¼ ê´€ë¦¬í•©ë‹ˆë‹¤.
+    /// ê³ ê° ìˆ˜ ëˆ„ì  ì¹´ìš´íŒ… ë° ìŠ¤í…Œì´ì§€ ì „í™˜ ì¡°ê±´ì„ ì²´í¬í•©ë‹ˆë‹¤.
     /// </summary>
     public class SalesSystem : MonoBehaviour
     {
-        [Header("Stage4 ÀüÈ¯ Á¶°Ç")]
-        [SerializeField] private int targetCurrency = 100; // 100¿ø ´Ş¼º ½Ã Stage4
+        [Header("Stage4 ì „í™˜ ì¡°ê±´")]
+        [SerializeField] private int targetCurrency = 100; // 100ì› ë‹¬ì„± ì‹œ Stage4
 
         private bool _stage4Triggered = false;
 
@@ -29,18 +29,18 @@ namespace PlayableAd.Systems
 
         private void HandleCustomerServed(int totalCount)
         {
-            Debug.Log($"[SalesSystem] ´©Àû °í°´ ¼ö: {totalCount}¸í " +
-                      $"/ ÀÜ¾×: {CurrencyManager.Instance.Balance}¿ø");
+            Debug.Log($"[SalesSystem] ëˆ„ì  ê³ ê° ìˆ˜: {totalCount}ëª… " +
+                      $"/ ì”ì•¡: {CurrencyManager.Instance.Balance}ì›");
         }
 
         private void HandleCurrencyChanged(int balance)
         {
-            // ÃÖÃÊ 100¿ø ´Ş¼º ½Ã 1È¸¸¸ Stage4 ÀüÈ¯
+            // ìµœì´ˆ 100ì› ë‹¬ì„± ì‹œ 1íšŒë§Œ Stage4 ì „í™˜
             if (_stage4Triggered) return;
             if (balance < targetCurrency) return;
 
             _stage4Triggered = true;
-            Debug.Log($"[SalesSystem] ¸ñÇ¥ ±İ¾× {targetCurrency}¿ø ´Ş¼º ¡æ Stage4 ÀüÈ¯");
+            Debug.Log($"[SalesSystem] ëª©í‘œ ê¸ˆì•¡ {targetCurrency}ì› ë‹¬ì„± â†’ Stage4 ì „í™˜");
             GameManager.Instance.AdvanceTo(GameStage.Stage4_WeaponUpgrade);
         }
     }
