@@ -1,5 +1,5 @@
 # 🎮 Prison Life — Playable AD
-
+게임 플레이 : https://gyunity.github.io/PlayableAd/
 ## 📌 프로젝트 개요
 
 > 광물 채굴 → 수갑 제작 → 판매 → 수용소 운영으로 이어지는 타이쿤 루프를 가진 플레이어블 광고 게임입니다.
