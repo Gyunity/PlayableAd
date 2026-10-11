@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{{{ PRODUCT_NAME }}}</title>
+    #if SHOW_DIAGNOSTICS
+    <link rel="stylesheet" href="<<<TemplateData/diagnostics.css>>>">
+    <script src="<<<TemplateData/diagnostics.js>>>"></script>
+    #endif
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #unity-canvas {
+            aspect-ratio: 9 / 16;
+            height: 100vh;
+            height: 100dvh;
+            max-width: 100vw;
+            max-height: calc(100vw * 16 / 9);
+            display: block;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    #if SHOW_DIAGNOSTICS
+    <div id="unity-footer">
+        <img id="diagnostics-icon" src="TemplateData/webmemd-icon.png">
+    </div>
+    #endif
+    <script src="Build/{{{ LOADER_FILENAME }}}"></script>
+    <script>
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        arguments: [],
+        dataUrl: "Build/{{{ DATA_FILENAME }}}",
+        frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_THREADS
+        workerUrl: "Build/{{{ WORKER_FILENAME }}}",
+#endif
+#if USE_WASM
+        codeUrl: "Build/{{{ CODE_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+        symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+#endif
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+        productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+        productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+      }).then((unityInstance) => {
+#if SHOW_DIAGNOSTICS
+        document.getElementById("diagnostics-icon").onclick = () => {
+            unityDiagnostics.openDiagnosticsDiv(unityInstance.GetMetricsInfo);
+        };
+#endif
+      }).catch((message) => {
+        alert(message);
+      });
+    </script>
+</body>
+</html>
